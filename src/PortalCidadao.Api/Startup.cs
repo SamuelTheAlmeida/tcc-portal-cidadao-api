@@ -26,7 +26,6 @@ namespace PortalCidadao.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -39,12 +38,18 @@ namespace PortalCidadao.Api
         {
             if (env.IsDevelopment())
             {
+                // add this middleware as the first one
+                app.Use((context, next) => {
+                    context.Request.PathBase = Environment.GetEnvironmentVariable("ASPNETCORE_APPL_PATH");
+                    return next();
+                });
+
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PortalCidadao.Api v1"));
             }
 
-            app.UseHttpsRedirection();
+           // app.UseHttpsRedirection();
 
             app.UseRouting();
 
