@@ -1,0 +1,18 @@
+[Unit]
+Description=Portal Cidadao Api
+
+[Service]
+WorkingDirectory=/var/www/portal-cidadao-api
+ExecStart=/var/www/portal-cidadao-api/PortalCidadao.Api
+Restart=always
+RestartSec=10
+KillSignal=SIGINT
+SyslogIdentifier=Api
+User=portal
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
+Environment=ASPNETCORE_APPL_PATH=/api
+TimeoutStopSec=90
+
+[Install]
+WantedBy=multi-user.target
