@@ -25,6 +25,18 @@ namespace PortalCidadao.Api
             services.RegisterServices(Configuration);
             services.AddAutoMapper(typeof(PostagemModel));
 
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder
+                            .AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                    });
+            });
+
             services.AddControllers()
                 .AddJsonOptions(options =>
                 {
@@ -39,6 +51,9 @@ namespace PortalCidadao.Api
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors();
+
+
             if (env.IsDevelopment())
             {
                 // add this middleware as the first one
