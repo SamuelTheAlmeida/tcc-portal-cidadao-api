@@ -6,7 +6,7 @@ namespace PortalCidadao.Application.Model
     public class PostagemModel
     {
         public int Id { get; set; }
-        public ESubcategoria Subcategoria { get; set; }
+        public EnumModel Subcategoria { get; set; }
         public CategoriaModel Categoria { get; set; }
         public int CategoriaId { get; set; }
         public string Titulo { get; set; }
