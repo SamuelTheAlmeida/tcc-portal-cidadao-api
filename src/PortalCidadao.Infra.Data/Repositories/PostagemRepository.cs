@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using PortalCidadao.Api.Domain.Models;
 using PortalCidadao.Application.Repositories;
+using System.Threading.Tasks;
 
 namespace PortalCidadao.Infra.Data.Repositories
 {
@@ -16,17 +17,30 @@ namespace PortalCidadao.Infra.Data.Repositories
             _dbConnection = dbConnection;
         }
 
-        public IEnumerable<Postagem> ListarTodos()
+        public async Task<IEnumerable<Postagem>> ListarTodos()
         {
-            const string sql = @"
+            var sql = @"
             SELECT P.*, C.* 
             FROM Postagem P 
             INNER JOIN Categoria C ON C.Id = P.CategoriaId";
 
-            return _dbConnection.Query<Postagem, Categoria, Postagem>(sql, (p, c) =>
+            return await _dbConnection.QueryAsync<Postagem, Categoria, Postagem>(sql, (p, c) =>
             {
                 p.Categoria = c;
                 return p;
+            });
+        }
+
+        public async Task Inserir(Postagem postagem)
+        {
+            var sql = @"INSERT INTO Postagem 
+                        (CategoriaId, Subcategoria, Titulo, Descricao, ImagemUrl, Latitude, Longitude, Bairro, UsuarioId, DataCadastro, Resolvido)
+                    VALUES(1, 1, 'Teste', 'Teste teste', 'teste', @Latitude, @Longitude, 'Teste', 1, NOW(), 0); ";
+
+            await _dbConnection.ExecuteAsync(sql, new 
+            {
+                postagem.Latitude,
+                postagem.Longitude 
             });
         }
     }

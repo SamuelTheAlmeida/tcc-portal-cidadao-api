@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PortalCidadao.Application.Model;
 using PortalCidadao.Application.Services.Interfaces;
+using System.Threading.Tasks;
 
 namespace PortalCidadao.Api.Controllers
 {
@@ -14,9 +16,15 @@ namespace PortalCidadao.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> ListarTodos()
         {
-            return Ok(_service.ListarTodos());
+            return Ok(await _service.ListarTodos());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Inserir(PostagemModel model)
+        {
+            return Ok(await _service.Inserir(model));
         }
     }
 }

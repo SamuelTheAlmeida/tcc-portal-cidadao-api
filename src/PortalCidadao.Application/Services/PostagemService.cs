@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using PortalCidadao.Application.Model;
 using PortalCidadao.Application.Repositories;
 using PortalCidadao.Application.Services.Interfaces;
 using PortalCidadao.Domain.Enums;
+using PortalCidadao.Domain.Models;
 
 namespace PortalCidadao.Application.Services
 {
@@ -18,8 +20,14 @@ namespace PortalCidadao.Application.Services
             _mapper = mapper;
         }
 
-        public BaseModel<IEnumerable<PostagemModel>> ListarTodos() =>
+        public async Task<BaseModel<IEnumerable<PostagemModel>>> ListarTodos() =>
             new(true, EMensagens.RealizadaComSucesso, _mapper.Map<IEnumerable<PostagemModel>>(
-                _repository.ListarTodos()));
+                await _repository.ListarTodos()));
+
+        public async Task<BaseModel> Inserir(PostagemModel model)
+        {
+            await _repository.Inserir(_mapper.Map<Postagem>(model));
+            return new(true, EMensagens.RealizadaComSucesso);
+        }
     }
 }

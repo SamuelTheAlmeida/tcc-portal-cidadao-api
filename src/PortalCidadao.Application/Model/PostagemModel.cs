@@ -15,7 +15,7 @@ namespace PortalCidadao.Application.Model
         public float Latitude { get; set; }
         public float Longitude { get; set; }
         public string Bairro { get; set; }
-        public DateTime DataCadastro { get; set; }
+        public DateTime DataCadastro { get; set; } = DateTime.Now;
         public bool Resolvido { get; set; }
 	}
 }

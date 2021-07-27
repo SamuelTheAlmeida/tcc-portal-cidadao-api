@@ -1,0 +1,4 @@
+INSERT INTO Usuario
+(CPF, Nome, Email, Senha, Perfil, EmailConfirmado, DataCadastro)
+VALUES
+('10472210980', 'Samuel', 'samuel@gmail.com', 'testeeeeee', 1, 0, NOW());
