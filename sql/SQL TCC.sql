@@ -1,4 +1,8 @@
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
+
+CREATE DATABASE PortalCidadao;
+USE PortalCidadao;
+
 CREATE TABLE Orgao
 (
 	Id int primary key auto_increment,

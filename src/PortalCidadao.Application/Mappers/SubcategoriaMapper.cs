@@ -18,8 +18,8 @@ namespace PortalCidadao.Application.Mappers
                         x.MapFrom(y => y.GetEnumDescription()))
                 .ForMember(x => x.Nome,
                     x =>
-                        x.MapFrom(y => y.GetEnumName()));
-
+                        x.MapFrom(y => y.GetEnumName()))
+                .ReverseMap();
         }
     }
 }
