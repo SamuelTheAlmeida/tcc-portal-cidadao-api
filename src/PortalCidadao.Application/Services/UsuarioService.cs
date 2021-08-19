@@ -4,12 +4,14 @@ using PortalCidadao.Application.Repositories;
 using PortalCidadao.Application.Services.Interfaces;
 using PortalCidadao.Application.Validators;
 using PortalCidadao.Domain.Enums;
+using PortalCidadao.Domain.Models;
 using PortalCidadao.Shared.Extensions;
+using System;
 using System.Threading.Tasks;
 
 namespace PortalCidadao.Application.Services
 {
-    class UsuarioService : IUsuarioService
+    public class UsuarioService : IUsuarioService
     {
         private readonly IMapper _mapper;
         private readonly ITokenService _tokenService;
@@ -17,7 +19,7 @@ namespace PortalCidadao.Application.Services
         private readonly IUsuarioRepository _usuarioRepository;
 
         public UsuarioService(IMapper mapper,
-            ITokenService tokenService, 
+            ITokenService tokenService,
             IUsuarioRepository usuarioRepository,
             LoginModelValidator loginModelValidator
             )
@@ -38,7 +40,7 @@ namespace PortalCidadao.Application.Services
                 return new BaseModel<UsuarioModel>(false, EMensagens.DadosInvalidos);
             }
 
-            var result = await _usuarioRepository.AutenticarAsync(loginModel.Email, loginModel.Senha);
+            var result = await _usuarioRepository.AutenticarAsync(loginModel.Login, loginModel.Senha);
 
             if (result == default)
             {
@@ -49,6 +51,21 @@ namespace PortalCidadao.Application.Services
             map.Token = _tokenService.GenerateToken(map);
 
             return new BaseModel<UsuarioModel>(true, EMensagens.RealizadaComSucesso, map);
+        }
+
+        public async Task<BaseModel<UsuarioCadastroModel>> InserirAsync(UsuarioCadastroModel usuarioCadastroModel)
+        {
+            usuarioCadastroModel.Senha = Md5HashExtensions.CreateMD5(usuarioCadastroModel.Senha);
+            var validator = await new UsuarioCadastroModelValidator().ValidateAsync(usuarioCadastroModel);
+            if (!validator.IsValid)
+            {
+                return new BaseModel<UsuarioCadastroModel>(false, EMensagens.DadosInvalidos) ;
+            }
+
+            var usuario = _mapper.Map<Usuario>(usuarioCadastroModel);
+            usuario.DataCadastro = DateTime.Now;
+            var result = _mapper.Map<UsuarioCadastroModel>(await _usuarioRepository.InserirAsync(usuario));
+            return new BaseModel<UsuarioCadastroModel>(true, EMensagens.RealizadaComSucesso, result);
         }
     }
 }

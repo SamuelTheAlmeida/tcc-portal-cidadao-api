@@ -1,3 +1,4 @@
+using PortalCidadao.Domain.Enums;
 using System;
 
 namespace PortalCidadao.Domain.Models
@@ -9,7 +10,7 @@ namespace PortalCidadao.Domain.Models
 		public string Nome { get; set; }
 		public string Email { get; set; }
 		public string Senha { get; set; }
-		public short Perfil { get; set; }
+		public EPerfis Perfil { get; set; }
 		public bool EmailConfirmado { get; set; }
 		public DateTime DataCadastro { get; set; }
 	}

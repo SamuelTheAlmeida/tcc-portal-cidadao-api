@@ -1,52 +1,41 @@
-﻿using PortalCidadao.Application.Repositories;
+﻿using Dapper;
+using PortalCidadao.Application.Repositories;
 using PortalCidadao.Domain.Models;
-using PortalCidadao.Shared.Helpers;
-using System.Data.SqlClient;
+using System.Data;
 using System.Threading.Tasks;
 
 namespace PortalCidadao.Infra.Data.Repositories
 {
-    class UsuarioRepository : IUsuarioRepository
+    public class UsuarioRepository : IUsuarioRepository
     {
-        private readonly string connectionString;
-        public UsuarioRepository()
+        private readonly IDbConnection _dbConnection;
+        public UsuarioRepository(IDbConnection dbConnection)
         {
-            connectionString = ConfigurationHelper.ConnectionString;
+            _dbConnection = dbConnection;
         }
 
-        public async Task<Usuario> AutenticarAsync(string email, string senha)
+        public async Task<Usuario> AutenticarAsync(string login, string senha)
         {
-            var query =
-            " SELECT                        " +
-            "   Id,                         " +
-            "   Email,                      " +
-            "   Perfil                      " +
-            " FROM                          " +
-            "   Usuario                     " +
-            " WHERE                         " +
-            "   1=1                         " +
-            "   AND email = @email          " +
-            "   AND senha = @senha          ";
+            var sql = @"SELECT U.*
+                        FROM Usuario U
+                        WHERE 1=1 
+                        AND (email = @login OR cpf = @login)
+                        AND senha = @senha";
 
-            using (var connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                using var command = connection.CreateCommand();
-                command.CommandText = query;
-                command.Parameters.AddWithValue("@email", email);
-                command.Parameters.AddWithValue("@senha", senha);
-                using var reader = await command.ExecuteReaderAsync();
-                if (await reader.ReadAsync())
-                {
-                    return new Usuario()
-                    {
-                        Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                        Email = reader.GetString(reader.GetOrdinal("Email")),
-                        //Perfil = (EPerfis)reader.GetInt32(reader.GetOrdinal("Perfil"))
-                    };
-                }
-            }
-            return default;
+            return await _dbConnection.QueryFirstOrDefaultAsync<Usuario>(sql, new { login, senha });
+
+        }
+
+        public async Task<Usuario> InserirAsync(Usuario usuario)
+        {
+            var sql = @"INSERT INTO Usuario
+                            (Nome, Cpf, Email, Senha, Perfil, EmailConfirmado, DataCadastro)
+                        VALUES
+                            (@Nome, @Cpf, @Email, @Senha, @Perfil, 0, @DataCadastro)";
+
+            await _dbConnection.QueryAsync(sql, usuario);
+            usuario.Senha = string.Empty;
+            return usuario;
         }
     }
 }

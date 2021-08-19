@@ -24,5 +24,17 @@ namespace PortalCidadao.Api.Controllers
         {
             return Ok(await _usuarioService.Autenticar(model));
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] UsuarioCadastroModel usuarioCadastroModel)
+        {
+            if (usuarioCadastroModel is null)
+            {
+                return BadRequest();
+            }
+
+            var response = await _usuarioService.InserirAsync(usuarioCadastroModel);
+            return Ok(response);
+        }
     }
 }

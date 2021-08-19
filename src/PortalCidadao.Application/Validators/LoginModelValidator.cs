@@ -7,7 +7,7 @@ namespace PortalCidadao.Application.Validators
     {
         public LoginModelValidator()
         {
-            RuleFor(x => x.Email).NotNull().EmailAddress();
+            //RuleFor(x => x.Login).NotNull().EmailAddress();// TODO adicionar validacao pro login
             RuleFor(x => x.Senha).Length(32).WithMessage("Senha em formato inválido.");
         }
     }
