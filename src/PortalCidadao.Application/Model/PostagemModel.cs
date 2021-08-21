@@ -17,5 +17,6 @@ namespace PortalCidadao.Application.Model
         public string Bairro { get; set; }
         public DateTime DataCadastro { get; set; } = DateTime.Now;
         public bool Resolvido { get; set; }
-	}
+        public int UsuarioId { get; set; }
+    }
 }
