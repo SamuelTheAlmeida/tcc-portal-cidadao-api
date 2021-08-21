@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using PortalCidadao.Application.Model;
@@ -29,5 +31,17 @@ namespace PortalCidadao.Application.Services
             await _repository.Inserir(_mapper.Map<Postagem>(model));
             return new(true, EMensagens.RealizadaComSucesso);
         }
+
+        public async Task<BaseModel<IEnumerable<CategoriaModel>>> ListarCategorias() =>
+            new(true, EMensagens.RealizadaComSucesso, _mapper.Map<IEnumerable<CategoriaModel>>(
+                await _repository.ListarCategorias()));
+
+        public BaseModel<IEnumerable<EnumModel>> ListarSubcategorias() =>
+             new(true, EMensagens.RealizadaComSucesso,
+                _mapper.Map<IEnumerable<EnumModel>>(Enum.GetValues(typeof(ESubcategoria))));
+
+        //public async Task<BaseModel<IEnumerable<OrgaoModel>>> ListarOrgaos() =>
+        //    new(true, EMensagens.RealizadaComSucesso, _mapper.Map<IEnumerable<OrgaoModel>>(
+        //        await _repository.ListarOrgaos()));
     }
 }

@@ -31,6 +31,15 @@ namespace PortalCidadao.Infra.Data.Repositories
             });
         }
 
+        public async Task<IEnumerable<Categoria>> ListarCategorias()
+        {
+            var sql = @"
+            SELECT C.* 
+            FROM Categoria C";
+
+            return await _dbConnection.QueryAsync<Categoria>(sql);
+        }
+
         public async Task Inserir(Postagem postagem)
         {
             var sql = @"INSERT INTO Postagem 

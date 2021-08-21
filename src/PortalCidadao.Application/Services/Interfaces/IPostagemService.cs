@@ -8,5 +8,7 @@ namespace PortalCidadao.Application.Services.Interfaces
     {
         Task<BaseModel<IEnumerable<PostagemModel>>> ListarTodos();
         Task<BaseModel> Inserir(PostagemModel model);
+        Task<BaseModel<IEnumerable<CategoriaModel>>> ListarCategorias();
+        BaseModel<IEnumerable<EnumModel>> ListarSubcategorias();
     }
 }
