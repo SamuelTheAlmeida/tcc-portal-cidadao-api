@@ -26,6 +26,9 @@ namespace PortalCidadao.Application.Services
             new(true, EMensagens.RealizadaComSucesso, _mapper.Map<IEnumerable<PostagemModel>>(
                 await _repository.ListarTodos(bairro)));
 
+        public async Task<BaseModel<PostagemModel>> ObterPorId(int id) =>
+          new(true, EMensagens.RealizadaComSucesso, _mapper.Map<PostagemModel>(await _repository.ObterPorId(id)));
+
         public async Task<BaseModel> Inserir(PostagemModel model)
         {
             await _repository.Inserir(_mapper.Map<Postagem>(model));
@@ -38,7 +41,7 @@ namespace PortalCidadao.Application.Services
 
         public BaseModel<IEnumerable<EnumModel>> ListarSubcategorias() =>
              new(true, EMensagens.RealizadaComSucesso,
-                _mapper.Map<IEnumerable<EnumModel>>(Enum.GetValues(typeof(ESubcategoria))));
+                _mapper.Map<IEnumerable<EnumModel>>(Enum.GetValues(typeof(ESubcategoria))).OrderBy(x => x.Descricao));
 
         public async Task<BaseModel<IEnumerable<string>>> ListarBairros() =>
           new(true, EMensagens.RealizadaComSucesso, await _repository.ListarBairros());
