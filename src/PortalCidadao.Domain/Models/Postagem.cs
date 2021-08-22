@@ -18,7 +18,8 @@ namespace PortalCidadao.Domain.Models
 		public string Bairro { get; set; }
 		public DateTime DataCadastro { get; set; }
 		public bool Resolvido { get; set; }
-	}
+        public int UsuarioId { get; set; }
+    }
 }
 
 
