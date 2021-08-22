@@ -20,6 +20,7 @@ namespace PortalCidadao.Application.Services
             {
                 Subject = new ClaimsIdentity(new Claim[] {
                     new Claim(ClaimTypes.Email, user.Email),
+                    new Claim("id", user.Id.ToString()),
                     new Claim(ClaimTypes.Role, user.Perfil.Nome.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),
