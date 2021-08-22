@@ -7,8 +7,9 @@ namespace PortalCidadao.Application.Repositories
 {
     public interface IPostagemRepository
     {
-        Task<IEnumerable<Postagem>> ListarTodos();
+        Task<IEnumerable<Postagem>> ListarTodos(string bairro);
         Task<IEnumerable<Categoria>> ListarCategorias();
+        Task<IEnumerable<string>> ListarBairros();
         Task Inserir(Postagem postagem);
     }
 }

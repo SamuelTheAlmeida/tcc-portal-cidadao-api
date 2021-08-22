@@ -22,9 +22,9 @@ namespace PortalCidadao.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<BaseModel<IEnumerable<PostagemModel>>> ListarTodos() =>
+        public async Task<BaseModel<IEnumerable<PostagemModel>>> ListarTodos(string bairro) =>
             new(true, EMensagens.RealizadaComSucesso, _mapper.Map<IEnumerable<PostagemModel>>(
-                await _repository.ListarTodos()));
+                await _repository.ListarTodos(bairro)));
 
         public async Task<BaseModel> Inserir(PostagemModel model)
         {
@@ -34,11 +34,14 @@ namespace PortalCidadao.Application.Services
 
         public async Task<BaseModel<IEnumerable<CategoriaModel>>> ListarCategorias() =>
             new(true, EMensagens.RealizadaComSucesso, _mapper.Map<IEnumerable<CategoriaModel>>(
-                await _repository.ListarCategorias()));
+                await _repository.ListarCategorias()).OrderBy(x => x.Nome));
 
         public BaseModel<IEnumerable<EnumModel>> ListarSubcategorias() =>
              new(true, EMensagens.RealizadaComSucesso,
                 _mapper.Map<IEnumerable<EnumModel>>(Enum.GetValues(typeof(ESubcategoria))));
+
+        public async Task<BaseModel<IEnumerable<string>>> ListarBairros() =>
+          new(true, EMensagens.RealizadaComSucesso, await _repository.ListarBairros());
 
         //public async Task<BaseModel<IEnumerable<OrgaoModel>>> ListarOrgaos() =>
         //    new(true, EMensagens.RealizadaComSucesso, _mapper.Map<IEnumerable<OrgaoModel>>(
