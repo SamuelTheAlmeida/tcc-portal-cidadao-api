@@ -58,12 +58,13 @@ namespace PortalCidadao.Application.Services
             usuarioCadastroModel.Senha = Md5HashExtensions.CreateMD5(usuarioCadastroModel.Senha);
             var validator = await new UsuarioCadastroModelValidator().ValidateAsync(usuarioCadastroModel);
             if (!validator.IsValid)
-            {
                 return new BaseModel<UsuarioCadastroModel>(false, EMensagens.DadosInvalidos) ;
-            }
+
+            var usuarioJaExiste = await _usuarioRepository.ObterUsuarioAsync(usuarioCadastroModel.CPF, usuarioCadastroModel.Email); 
+            if(usuarioJaExiste is not null)
+                return new BaseModel<UsuarioCadastroModel>(false, EMensagens.UsuarioJaCadastrado);
 
             var usuario = _mapper.Map<Usuario>(usuarioCadastroModel);
-            usuario.DataCadastro = DateTime.Now;
             var result = _mapper.Map<UsuarioCadastroModel>(await _usuarioRepository.InserirAsync(usuario));
             return new BaseModel<UsuarioCadastroModel>(true, EMensagens.RealizadaComSucesso, result);
         }
