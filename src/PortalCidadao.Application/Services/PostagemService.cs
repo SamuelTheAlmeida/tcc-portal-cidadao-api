@@ -26,6 +26,9 @@ namespace PortalCidadao.Application.Services
             new(true, EMensagens.RealizadaComSucesso, _mapper.Map<IEnumerable<PostagemModel>>(
                 await _repository.ListarTodos(bairro)));
 
+        public async Task<BaseModel<PostagemModel>> ObterPorId(int id) =>
+          new(true, EMensagens.RealizadaComSucesso, _mapper.Map<PostagemModel>(await _repository.ObterPorId(id)));
+
         public async Task<BaseModel> Inserir(PostagemModel model)
         {
             await _repository.Inserir(_mapper.Map<Postagem>(model));

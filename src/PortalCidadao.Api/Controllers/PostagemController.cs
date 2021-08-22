@@ -19,6 +19,10 @@ namespace PortalCidadao.Api.Controllers
         public async Task<IActionResult> ListarTodos(string bairro) =>
              Ok(await _service.ListarTodos(bairro));
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> ObterPorId(int id) =>
+             Ok(await _service.ObterPorId(id));
+
         [HttpPost]
         public async Task<IActionResult> Inserir(PostagemModel model) =>
             Ok(await _service.Inserir(model));

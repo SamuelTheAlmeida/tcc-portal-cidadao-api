@@ -5,6 +5,7 @@ using System.Data;
 using PortalCidadao.Api.Domain.Models;
 using PortalCidadao.Application.Repositories;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace PortalCidadao.Infra.Data.Repositories
 {
@@ -30,6 +31,23 @@ namespace PortalCidadao.Infra.Data.Repositories
                 p.Categoria = c;
                 return p;
             }, new { bairro });
+        }
+
+        public async Task<Postagem> ObterPorId(int id)
+        {
+            var sql = @"
+                    SELECT P.*, C.* 
+                    FROM Postagem P 
+                    INNER JOIN Categoria C ON C.Id = P.CategoriaId
+                    WHERE P.Id = @id";
+
+            var resultado = await _dbConnection.QueryAsync<Postagem, Categoria, Postagem>(sql, (p, c) =>
+            {
+                p.Categoria = c;
+                return p;
+            }, new { id });
+
+            return resultado.FirstOrDefault();
         }
 
         public async Task<IEnumerable<Categoria>> ListarCategorias()
