@@ -41,7 +41,7 @@ namespace PortalCidadao.Application.Services
 
         public BaseModel<IEnumerable<EnumModel>> ListarSubcategorias() =>
              new(true, EMensagens.RealizadaComSucesso,
-                _mapper.Map<IEnumerable<EnumModel>>(Enum.GetValues(typeof(ESubcategoria))));
+                _mapper.Map<IEnumerable<EnumModel>>(Enum.GetValues(typeof(ESubcategoria))).OrderBy(x => x.Descricao));
 
         public async Task<BaseModel<IEnumerable<string>>> ListarBairros() =>
           new(true, EMensagens.RealizadaComSucesso, await _repository.ListarBairros());
