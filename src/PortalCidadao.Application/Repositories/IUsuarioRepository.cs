@@ -5,7 +5,8 @@ namespace PortalCidadao.Application.Repositories
 {
     public interface IUsuarioRepository
     {
-        Task<Usuario> AutenticarAsync(string email, string senha);
+        Task<Usuario> AutenticarAsync(string login, string senha);
         Task<Usuario> InserirAsync(Usuario usuario);
+        Task<Usuario> ObterUsuarioAsync(string cpf, string email);
     }
 }
