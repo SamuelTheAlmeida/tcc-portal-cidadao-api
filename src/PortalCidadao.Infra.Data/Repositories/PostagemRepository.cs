@@ -44,7 +44,7 @@ namespace PortalCidadao.Infra.Data.Repositories
         public async Task<IEnumerable<string>> ListarBairros()
         {
             var sql = @"
-            SELECT P.Bairro 
+            SELECT DISTINCT P.Bairro 
             FROM Postagem P 
             ORDER BY 1";
 
