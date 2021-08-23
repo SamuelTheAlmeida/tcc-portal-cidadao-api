@@ -1,6 +1,7 @@
 #senha Samuel testeeeeee
 #senha Gustavo 123456789
 
+USE PortalCidadao;
 INSERT INTO Usuario
 (CPF, Nome, Email, Senha, Perfil, EmailConfirmado, DataCadastro)
 VALUES
@@ -20,7 +21,7 @@ VALUES
 ('Centro de Controle de Zoonoses e Vetores de Curitiba');
 
 INSERT INTO Categoria 
-(Mome, Descricao, Orgaoid) 
+(Nome, Descricao, Orgaoid) 
 VALUES 
 ('Espaços públicos', 'Espaços públicos', 1),
 ('Iluminação', '', 2),
