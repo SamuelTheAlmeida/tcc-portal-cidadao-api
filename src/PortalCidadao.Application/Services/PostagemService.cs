@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using PortalCidadao.Application.Model;
 using PortalCidadao.Application.Repositories;
 using PortalCidadao.Application.Services.Interfaces;
@@ -15,10 +16,12 @@ namespace PortalCidadao.Application.Services
     {
         private readonly IMapper _mapper;
         private readonly IPostagemRepository _repository;
+        private readonly IArquivoRepository _arquivoRepository;
 
-        public PostagemService(IPostagemRepository repository, IMapper mapper)
+        public PostagemService(IPostagemRepository repository, IArquivoRepository arquivoRepository, IMapper mapper)
         {
             _repository = repository;
+            _arquivoRepository = arquivoRepository;
             _mapper = mapper;
         }
 
@@ -29,8 +32,9 @@ namespace PortalCidadao.Application.Services
         public async Task<BaseModel<PostagemModel>> ObterPorId(int id) =>
           new(true, EMensagens.RealizadaComSucesso, _mapper.Map<PostagemModel>(await _repository.ObterPorId(id)));
 
-        public async Task<BaseModel> Inserir(PostagemModel model)
+        public async Task<BaseModel> Inserir(PostagemModel model, IFormFile file)
         {
+            model.ImagemUrl = await _arquivoRepository.Salvar(file);
             await _repository.Inserir(_mapper.Map<Postagem>(model));
             return new(true, EMensagens.RealizadaComSucesso);
         }

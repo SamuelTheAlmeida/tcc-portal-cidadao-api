@@ -21,6 +21,7 @@ namespace PortalCidadao.CrossCutting
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IPostagemRepository, PostagemRepository>();
             services.AddScoped<ICategoriaRepository, CategoriaRepository>();
+            services.AddScoped<IArquivoRepository, ArquivoRepository>();
             #endregion
 
             #region Application
