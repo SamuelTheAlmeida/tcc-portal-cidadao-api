@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Reflection.Metadata;
+using Microsoft.AspNetCore.Mvc;
 using PortalCidadao.Application.Model;
 using PortalCidadao.Application.Services.Interfaces;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using PortalCidadao.Api.Request;
 
 namespace PortalCidadao.Api.Controllers
 {
@@ -24,8 +28,12 @@ namespace PortalCidadao.Api.Controllers
              Ok(await _service.ObterPorId(id));
 
         [HttpPost]
-        public async Task<IActionResult> Inserir(PostagemModel model) =>
-            Ok(await _service.Inserir(model));
+        public async Task<IActionResult> Inserir(
+            [FromForm] NovaPostagemRequest request)
+        {
+            var model = JsonConvert.DeserializeObject<PostagemModel>(request.Model);
+            return Ok(await _service.Inserir(model, request.File));
+        }
 
         [HttpGet("categorias")]
         public async Task<IActionResult> ListarCategorias() =>
@@ -39,7 +47,6 @@ namespace PortalCidadao.Api.Controllers
         [HttpGet("bairros")]
         public async Task<IActionResult> ListarBairros() =>
             Ok(await _service.ListarBairros());
-
 
         //[HttpGet]
         //public async Task<IActionResult> ListarOrgaos()
