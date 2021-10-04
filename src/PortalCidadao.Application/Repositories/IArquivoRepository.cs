@@ -6,5 +6,6 @@ namespace PortalCidadao.Application.Repositories
     public interface IArquivoRepository
     {
         Task<string> Salvar(IFormFile file);
+        Task<byte[]> Obter(string nomeArquivo);
     }
 }

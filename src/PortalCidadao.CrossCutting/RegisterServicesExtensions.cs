@@ -28,6 +28,7 @@ namespace PortalCidadao.CrossCutting
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<IPostagemService, PostagemService>();
+            services.AddScoped<IArquivoService, ArquivoService>();
             #endregion
 
             #region Validators

@@ -32,8 +32,7 @@ namespace PortalCidadao.Api.Controllers
             [FromForm] NovaPostagemRequest request)
         {
             var model = JsonConvert.DeserializeObject<PostagemModel>(request.Model);
-            await _service.Inserir(model, request.File);
-            return Ok();
+            return Ok(await _service.Inserir(model, request.File));
         }
 
         [HttpGet("categorias")]
@@ -48,7 +47,6 @@ namespace PortalCidadao.Api.Controllers
         [HttpGet("bairros")]
         public async Task<IActionResult> ListarBairros() =>
             Ok(await _service.ListarBairros());
-
 
         //[HttpGet]
         //public async Task<IActionResult> ListarOrgaos()
