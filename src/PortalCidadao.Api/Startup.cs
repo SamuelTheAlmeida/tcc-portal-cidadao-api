@@ -8,6 +8,7 @@ using System;
 using PortalCidadao.Application.Model;
 using PortalCidadao.CrossCutting;
 using PortalCidadao.Api.Middlewares;
+using PortalCidadao.Shared.Helpers;
 
 namespace PortalCidadao.Api
 {
@@ -22,6 +23,7 @@ namespace PortalCidadao.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            ConfigurationHelper.CarregarConfiguracoes(Configuration);
             services.RegisterServices(Configuration);
             services.AddAutoMapper(typeof(PostagemModel));
 
@@ -68,7 +70,7 @@ namespace PortalCidadao.Api
             }
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.ConfigureExceptionHandler(Configuration.GetValue<bool>("InternalServerErrorWithException"));

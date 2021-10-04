@@ -16,15 +16,36 @@ namespace PortalCidadao.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ListarTodos()
-        {
-            return Ok(await _service.ListarTodos());
-        }
+        public async Task<IActionResult> ListarTodos(string bairro) =>
+             Ok(await _service.ListarTodos(bairro));
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> ObterPorId(int id) =>
+             Ok(await _service.ObterPorId(id));
 
         [HttpPost]
-        public async Task<IActionResult> Inserir(PostagemModel model)
-        {
-            return Ok(await _service.Inserir(model));
-        }
+        public async Task<IActionResult> Inserir(PostagemModel model) =>
+            Ok(await _service.Inserir(model));
+
+        [HttpGet("categorias")]
+        public async Task<IActionResult> ListarCategorias() =>
+            Ok(await _service.ListarCategorias());
+
+
+        [HttpGet("subcategorias")]
+        public IActionResult ListarSubcategorias() =>
+            Ok(_service.ListarSubcategorias());
+
+        [HttpGet("bairros")]
+        public async Task<IActionResult> ListarBairros() =>
+            Ok(await _service.ListarBairros());
+
+
+        //[HttpGet]
+        //public async Task<IActionResult> ListarOrgaos()
+        //{
+        //    return Ok(await _service.ListarOrgaos());
+        //}
+
     }
 }

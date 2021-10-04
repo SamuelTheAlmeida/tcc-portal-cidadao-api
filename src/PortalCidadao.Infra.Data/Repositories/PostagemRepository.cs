@@ -5,6 +5,7 @@ using System.Data;
 using PortalCidadao.Api.Domain.Models;
 using PortalCidadao.Application.Repositories;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace PortalCidadao.Infra.Data.Repositories
 {
@@ -17,31 +18,65 @@ namespace PortalCidadao.Infra.Data.Repositories
             _dbConnection = dbConnection;
         }
 
-        public async Task<IEnumerable<Postagem>> ListarTodos()
+        public async Task<IEnumerable<Postagem>> ListarTodos(string bairro)
         {
             var sql = @"
-            SELECT P.*, C.* 
-            FROM Postagem P 
-            INNER JOIN Categoria C ON C.Id = P.CategoriaId";
+                    SELECT P.*, C.* 
+                    FROM Postagem P 
+                    INNER JOIN Categoria C ON C.Id = P.CategoriaId
+                    WHERE P.Bairro = IFNULL(@bairro, P.Bairro)";
 
             return await _dbConnection.QueryAsync<Postagem, Categoria, Postagem>(sql, (p, c) =>
             {
                 p.Categoria = c;
                 return p;
-            });
+            }, new { bairro });
+        }
+
+        public async Task<Postagem> ObterPorId(int id)
+        {
+            var sql = @"
+                    SELECT P.*, C.* 
+                    FROM Postagem P 
+                    INNER JOIN Categoria C ON C.Id = P.CategoriaId
+                    WHERE P.Id = @id";
+
+            var resultado = await _dbConnection.QueryAsync<Postagem, Categoria, Postagem>(sql, (p, c) =>
+            {
+                p.Categoria = c;
+                return p;
+            }, new { id });
+
+            return resultado.FirstOrDefault();
+        }
+
+        public async Task<IEnumerable<Categoria>> ListarCategorias()
+        {
+            var sql = @"
+            SELECT C.* 
+            FROM Categoria C";
+
+            return await _dbConnection.QueryAsync<Categoria>(sql);
+        }
+
+        public async Task<IEnumerable<string>> ListarBairros()
+        {
+            var sql = @"
+            SELECT DISTINCT P.Bairro 
+            FROM Postagem P 
+            ORDER BY 1";
+
+            return await _dbConnection.QueryAsync<string>(sql);
         }
 
         public async Task Inserir(Postagem postagem)
         {
             var sql = @"INSERT INTO Postagem 
                         (CategoriaId, Subcategoria, Titulo, Descricao, ImagemUrl, Latitude, Longitude, Bairro, UsuarioId, DataCadastro, Resolvido)
-                    VALUES(1, 1, 'Teste', 'Teste teste', 'teste', @Latitude, @Longitude, 'Teste', 1, NOW(), 0); ";
+                    VALUES(@CategoriaId, @Subcategoria, @Titulo, @Descricao, '', @Latitude, @Longitude, @Bairro, @UsuarioId, NOW(), @Resolvido); ";
 
-            await _dbConnection.ExecuteAsync(sql, new 
-            {
-                postagem.Latitude,
-                postagem.Longitude 
-            });
+            await _dbConnection.QueryAsync(sql, postagem);
+
         }
     }
 }
