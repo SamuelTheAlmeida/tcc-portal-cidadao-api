@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using PortalCidadao.Application.Model;
 
 namespace PortalCidadao.Application.Services.Interfaces
@@ -8,7 +9,7 @@ namespace PortalCidadao.Application.Services.Interfaces
     {
         Task<BaseModel<IEnumerable<PostagemModel>>> ListarTodos(string bairro);
         Task<BaseModel<PostagemModel>> ObterPorId(int id);
-        Task<BaseModel> Inserir(PostagemModel model);
+        Task<BaseModel> Inserir(PostagemModel model, IFormFile file);
         Task<BaseModel<IEnumerable<CategoriaModel>>> ListarCategorias();
         BaseModel<IEnumerable<EnumModel>> ListarSubcategorias();
         Task<BaseModel<IEnumerable<string>>> ListarBairros();

@@ -20,7 +20,7 @@ namespace PortalCidadao.Infra.Data.Repositories
 
         public async Task<IEnumerable<Postagem>> ListarTodos(string bairro)
         {
-            var sql = @"
+            const string sql = @"
                     SELECT P.*, C.* 
                     FROM Postagem P 
                     INNER JOIN Categoria C ON C.Id = P.CategoriaId
@@ -35,7 +35,7 @@ namespace PortalCidadao.Infra.Data.Repositories
 
         public async Task<Postagem> ObterPorId(int id)
         {
-            var sql = @"
+            const string sql = @"
                     SELECT P.*, C.* 
                     FROM Postagem P 
                     INNER JOIN Categoria C ON C.Id = P.CategoriaId
@@ -52,7 +52,7 @@ namespace PortalCidadao.Infra.Data.Repositories
 
         public async Task<IEnumerable<Categoria>> ListarCategorias()
         {
-            var sql = @"
+            const string sql = @"
             SELECT C.* 
             FROM Categoria C";
 
@@ -61,7 +61,7 @@ namespace PortalCidadao.Infra.Data.Repositories
 
         public async Task<IEnumerable<string>> ListarBairros()
         {
-            var sql = @"
+            const string sql = @"
             SELECT DISTINCT P.Bairro 
             FROM Postagem P 
             ORDER BY 1";
@@ -71,12 +71,11 @@ namespace PortalCidadao.Infra.Data.Repositories
 
         public async Task Inserir(Postagem postagem)
         {
-            var sql = @"INSERT INTO Postagem 
+            const string sql = @"INSERT INTO Postagem 
                         (CategoriaId, Subcategoria, Titulo, Descricao, ImagemUrl, Latitude, Longitude, Bairro, UsuarioId, DataCadastro, Resolvido)
-                    VALUES(@CategoriaId, @Subcategoria, @Titulo, @Descricao, '', @Latitude, @Longitude, @Bairro, @UsuarioId, NOW(), @Resolvido); ";
+                    VALUES(@CategoriaId, @Subcategoria, @Titulo, @Descricao, @ImagemUrl, @Latitude, @Longitude, @Bairro, @UsuarioId, NOW(), @Resolvido); ";
 
             await _dbConnection.QueryAsync(sql, postagem);
-
         }
     }
 }
