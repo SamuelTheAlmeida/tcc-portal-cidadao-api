@@ -1,9 +1,7 @@
-﻿using System.Reflection.Metadata;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PortalCidadao.Application.Model;
 using PortalCidadao.Application.Services.Interfaces;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using PortalCidadao.Api.Request;
 
@@ -26,6 +24,10 @@ namespace PortalCidadao.Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> ObterPorId(int id) =>
              Ok(await _service.ObterPorId(id));
+
+        [HttpGet("detalhes/{id:int}")]
+        public async Task<IActionResult> ObterDetalhes(int id) =>
+            Ok(await _service.ObterPorId(id));
 
         [HttpPost]
         public async Task<IActionResult> Inserir(

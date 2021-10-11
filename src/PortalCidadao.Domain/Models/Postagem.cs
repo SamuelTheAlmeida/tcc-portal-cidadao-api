@@ -19,6 +19,9 @@ namespace PortalCidadao.Domain.Models
 		public DateTime DataCadastro { get; set; }
 		public bool Resolvido { get; set; }
         public int UsuarioId { get; set; }
+		public Usuario Usuario { get; set; }
+		public long Curtidas { get; set; }
+		public long Descurtidas { get; set; }
     }
 }
 

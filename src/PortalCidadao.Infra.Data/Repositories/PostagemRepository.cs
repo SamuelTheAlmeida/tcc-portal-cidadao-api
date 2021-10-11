@@ -50,6 +50,38 @@ namespace PortalCidadao.Infra.Data.Repositories
             return resultado.FirstOrDefault();
         }
 
+        public async Task<Postagem> ObterDetalhado(int id)
+        {
+            const string sqlCurtidas = @"(SELECT COUNT(*)
+                    FROM Curtida C
+                    WHERE C.PostagemId = @id AND C.Acao = true)";
+
+            const string sqlDescurtidas = @"(SELECT COUNT(*)
+                    FROM Curtida C
+                    WHERE C.PostagemId = @id AND C.Acao = false)";
+
+            var sql = $@"SELECT P.*, C.*, U.*, 
+                    {sqlCurtidas} 
+                    AS Curtidas,
+                    {sqlDescurtidas} 
+                    AS Descurtidas
+                    FROM Postagem P 
+                    INNER JOIN Categoria C ON C.Id = P.CategoriaId
+                    INNER JOIN Usuario U ON U.Id = P.UsuarioId
+                    WHERE P.Id = @id;";
+
+            var resultado = await _dbConnection.QueryAsync<Postagem, Categoria, Usuario, long, long, Postagem>(sql, (p, c, u, curtidas, descurtidas) =>
+            {
+                p.Categoria = c;
+                p.Usuario = u;
+                p.Curtidas = curtidas;
+                p.Descurtidas = descurtidas;
+                return p;
+            }, new { id }, splitOn: "Id,Id,Id,Curtidas,Descurtidas");
+
+            return resultado.FirstOrDefault();
+        }
+
         public async Task<IEnumerable<Categoria>> ListarCategorias()
         {
             const string sql = @"

@@ -1,5 +1,4 @@
 ﻿using System;
-using PortalCidadao.Domain.Enums;
 
 namespace PortalCidadao.Application.Model
 {
@@ -18,5 +17,8 @@ namespace PortalCidadao.Application.Model
         public DateTime DataCadastro { get; set; } = DateTime.Now;
         public bool Resolvido { get; set; }
         public int UsuarioId { get; set; }
+        public UsuarioModel Usuario { get; set; }
+        public long Curtidas { get; set; }
+        public long Descurtidas { get; set; }
     }
 }

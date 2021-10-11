@@ -30,7 +30,7 @@ namespace PortalCidadao.Application.Services
                 await _repository.ListarTodos(bairro)));
 
         public async Task<BaseModel<PostagemModel>> ObterPorId(int id) =>
-          new(true, EMensagens.RealizadaComSucesso, _mapper.Map<PostagemModel>(await _repository.ObterPorId(id)));
+          new(true, EMensagens.RealizadaComSucesso, _mapper.Map<PostagemModel>(await _repository.ObterDetalhado(id)));
 
         public async Task<BaseModel> Inserir(PostagemModel model, IFormFile file)
         {
