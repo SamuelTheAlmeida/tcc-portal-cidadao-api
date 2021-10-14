@@ -23,6 +23,7 @@ namespace PortalCidadao.CrossCutting
             services.AddScoped<ICategoriaRepository, CategoriaRepository>();
             services.AddScoped<IArquivoRepository, ArquivoRepository>();
             services.AddScoped<ICurtidaRepository, CurtidaRepository>();
+            services.AddScoped<IComentarioRepository, ComentarioRepository>();
             #endregion
 
             #region Application
@@ -31,6 +32,7 @@ namespace PortalCidadao.CrossCutting
             services.AddScoped<IPostagemService, PostagemService>();
             services.AddScoped<IArquivoService, ArquivoService>();
             services.AddScoped<ICurtidaService, CurtidaService>();
+            services.AddScoped<IComentarioService, ComentarioService>();
             #endregion
 
             #region Validators
