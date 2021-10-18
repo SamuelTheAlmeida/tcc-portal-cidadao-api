@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Runtime.InteropServices.ComTypes;
+using AutoMapper;
 using PortalCidadao.Application.Model;
 using PortalCidadao.Application.Repositories;
 using PortalCidadao.Application.Services.Interfaces;
@@ -6,7 +7,6 @@ using PortalCidadao.Application.Validators;
 using PortalCidadao.Domain.Enums;
 using PortalCidadao.Domain.Models;
 using PortalCidadao.Shared.Extensions;
-using System;
 using System.Threading.Tasks;
 
 namespace PortalCidadao.Application.Services
@@ -34,18 +34,14 @@ namespace PortalCidadao.Application.Services
         public async Task<BaseModel<UsuarioModel>> Autenticar(LoginModel loginModel)
         {
             loginModel.Senha = Md5HashExtensions.CreateMD5(loginModel.Senha);
-            var validator = _loginModelValidator.Validate(loginModel);
+            var validator = await _loginModelValidator.ValidateAsync(loginModel);
             if (!validator.IsValid)
-            {
                 return new BaseModel<UsuarioModel>(false, EMensagens.DadosInvalidos);
-            }
 
             var result = await _usuarioRepository.AutenticarAsync(loginModel.Login, loginModel.Senha);
 
             if (result == default)
-            {
                 return new BaseModel<UsuarioModel>(false, EMensagens.EmailOuSenhaInvalidos);
-            }
 
             var map = _mapper.Map<UsuarioModel>(result);
             map.Token = _tokenService.GenerateToken(map);
@@ -67,6 +63,22 @@ namespace PortalCidadao.Application.Services
             var usuario = _mapper.Map<Usuario>(usuarioCadastroModel);
             var result = _mapper.Map<UsuarioCadastroModel>(await _usuarioRepository.InserirAsync(usuario));
             return new BaseModel<UsuarioCadastroModel>(true, EMensagens.RealizadaComSucesso, result);
+        }
+        public async Task<BaseModel<UsuarioAlteracaoModel>> AtualizarAsync(UsuarioAlteracaoModel usuarioAlteracaoModel)
+        {
+            if (!string.IsNullOrEmpty(usuarioAlteracaoModel.Senha))
+                usuarioAlteracaoModel.Senha = Md5HashExtensions.CreateMD5(usuarioAlteracaoModel.Senha);
+
+            if (!string.IsNullOrEmpty(usuarioAlteracaoModel.Email))
+            {
+                var emailJaExiste = await _usuarioRepository.VerificarEmailAsync(usuarioAlteracaoModel.Email, usuarioAlteracaoModel.Id);
+                if (emailJaExiste is not null)
+                    return new BaseModel<UsuarioAlteracaoModel>(false, EMensagens.UsuarioJaCadastrado);
+            }
+
+            var usuario = _mapper.Map<Usuario>(usuarioAlteracaoModel);
+            var result = _mapper.Map<UsuarioAlteracaoModel>(await _usuarioRepository.AtualizarAsync(usuario));
+            return new BaseModel<UsuarioAlteracaoModel>(true, EMensagens.RealizadaComSucesso, result);
         }
     }
 }

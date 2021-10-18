@@ -38,7 +38,7 @@ namespace PortalCidadao.Infra.Data.Repositories
             return usuario;
         }
 
-        public async Task<Usuario> ObterUsuarioAsync(string cpf, string email)
+        public async Task<Usuario> ObterUsuarioAsync(string cpf = "", string email = "")
         {
             var sql = @"SELECT U.*
                         FROM Usuario U
@@ -46,6 +46,33 @@ namespace PortalCidadao.Infra.Data.Repositories
                         AND (U.Cpf = @cpf OR U.Email = @email)";
 
             return await _dbConnection.QueryFirstOrDefaultAsync<Usuario>(sql, new { cpf, email });
+        }
+
+        public async Task<Usuario> VerificarEmailAsync(string email, int usuarioId)
+        {
+            var sql = @"SELECT U.*
+                        FROM Usuario U
+                        WHERE U.Email = @email AND U.Id != @usuarioId";
+
+            return await _dbConnection.QueryFirstOrDefaultAsync<Usuario>(sql, new { email, usuarioId });
+        }
+
+        public async Task<Usuario> AtualizarAsync(Usuario usuario)
+        {
+            usuario.Nome = string.IsNullOrEmpty(usuario.Nome) ? default : usuario.Nome;
+            usuario.Email = string.IsNullOrEmpty(usuario.Email) ? default : usuario.Email;
+            usuario.Senha = string.IsNullOrEmpty(usuario.Senha) ? default : usuario.Senha;
+
+            const string sql = @"UPDATE Usuario 
+                                SET 
+                                Email = CASE WHEN ISNULL(@Email) THEN Email ELSE @Email END,
+                                Senha = CASE WHEN ISNULL(@Senha) THEN Senha ELSE @Senha END,
+                                Nome = CASE WHEN ISNULL(@Nome) THEN Senha ELSE @Nome END
+                                WHERE Id = @Id";
+
+            await _dbConnection.QueryAsync(sql, usuario);
+            usuario.Senha = string.Empty;
+            return usuario;
         }
     }
 }
