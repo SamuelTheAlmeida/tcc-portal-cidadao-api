@@ -33,6 +33,21 @@ namespace PortalCidadao.Infra.Data.Repositories
             }, new { bairro });
         }
 
+        public async Task<IEnumerable<Postagem>> ListarPorCategoria(string categoria)
+        {
+            const string sql = @"
+                    SELECT P.*, C.* 
+                    FROM Postagem P 
+                    INNER JOIN Categoria C ON C.Id = P.CategoriaId
+                    WHERE C.Nome = @categoria";
+
+            return await _dbConnection.QueryAsync<Postagem, Categoria, Postagem>(sql, (p, c) =>
+            {
+                p.Categoria = c;
+                return p;
+            }, new { categoria });
+        }
+
         public async Task<Postagem> ObterPorId(int id)
         {
             const string sql = @"
