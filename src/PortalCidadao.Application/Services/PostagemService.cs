@@ -24,13 +24,10 @@ namespace PortalCidadao.Application.Services
             _arquivoRepository = arquivoRepository;
             _mapper = mapper;
         }
-        public async Task<BaseModel<IEnumerable<PostagemModel>>> ListarPorCategoria(string categoria) =>
-            new(true, EMensagens.RealizadaComSucesso, _mapper.Map<IEnumerable<PostagemModel>>(
-                await _repository.ListarPorCategoria(categoria)));
 
-        public async Task<BaseModel<IEnumerable<PostagemModel>>> ListarTodos(string bairro) =>
+        public async Task<BaseModel<IEnumerable<PostagemModel>>> ListarTodos(string bairro, int categoriaId) =>
             new(true, EMensagens.RealizadaComSucesso, _mapper.Map<IEnumerable<PostagemModel>>(
-                await _repository.ListarTodos(bairro)));
+                await _repository.ListarTodos(bairro, categoriaId)));
 
         public async Task<BaseModel<PostagemModel>> ObterPorId(int id) =>
           new(true, EMensagens.RealizadaComSucesso, _mapper.Map<PostagemModel>(await _repository.ObterDetalhado(id)));

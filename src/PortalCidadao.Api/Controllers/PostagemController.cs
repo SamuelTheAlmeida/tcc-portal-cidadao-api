@@ -18,11 +18,8 @@ namespace PortalCidadao.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ListarTodos(string bairro) =>
-             Ok(await _service.ListarTodos(bairro));
-             [HttpGet("categoria/{categoria}")]
-        public async Task<IActionResult> ListarPorCategoria(string categoria) =>
-             Ok(await _service.ListarPorCategoria(categoria));
+        public async Task<IActionResult> ListarTodos(string bairro, int categoriaId) =>
+             Ok(await _service.ListarTodos(bairro, categoriaId));
 
         [HttpGet("{id}")]
         public async Task<IActionResult> ObterPorId(int id) =>
