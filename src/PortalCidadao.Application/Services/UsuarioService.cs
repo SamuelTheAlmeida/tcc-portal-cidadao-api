@@ -64,20 +64,17 @@ namespace PortalCidadao.Application.Services
             var result = _mapper.Map<UsuarioCadastroModel>(await _usuarioRepository.InserirAsync(usuario));
             return new BaseModel<UsuarioCadastroModel>(true, EMensagens.RealizadaComSucesso, result);
         }
-        public async Task<BaseModel<UsuarioAlteracaoModel>> AtualizarAsync(UsuarioAlteracaoModel usuarioAlteracaoModel)
+        public async Task<BaseModel<UsuarioAlteracaoModel>> AtualizarAsync(int id, UsuarioAlteracaoModel usuarioAlteracaoModel)
         {
-            if (!string.IsNullOrEmpty(usuarioAlteracaoModel.Senha))
-                usuarioAlteracaoModel.Senha = Md5HashExtensions.CreateMD5(usuarioAlteracaoModel.Senha);
-
             if (!string.IsNullOrEmpty(usuarioAlteracaoModel.Email))
             {
-                var emailJaExiste = await _usuarioRepository.VerificarEmailAsync(usuarioAlteracaoModel.Email, usuarioAlteracaoModel.Id);
+                var emailJaExiste = await _usuarioRepository.VerificarEmailAsync(usuarioAlteracaoModel.Email, id);
                 if (emailJaExiste is not null)
                     return new BaseModel<UsuarioAlteracaoModel>(false, EMensagens.UsuarioJaCadastrado);
             }
 
             var usuario = _mapper.Map<Usuario>(usuarioAlteracaoModel);
-            var result = _mapper.Map<UsuarioAlteracaoModel>(await _usuarioRepository.AtualizarAsync(usuario));
+            var result = _mapper.Map<UsuarioAlteracaoModel>(await _usuarioRepository.AtualizarAsync(usuario, id));
             return new BaseModel<UsuarioAlteracaoModel>(true, EMensagens.RealizadaComSucesso, result);
         }
     }

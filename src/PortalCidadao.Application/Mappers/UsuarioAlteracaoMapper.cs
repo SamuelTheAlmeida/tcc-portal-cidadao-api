@@ -9,16 +9,12 @@ namespace PortalCidadao.Application.Mappers
         public UsuarioAlteracaoMapper()
         {
             CreateMap<Usuario, UsuarioAlteracaoModel>()
-                .ForMember(p => p.Id, p => p.MapFrom(x => x.Id))
                 .ForMember(p => p.Nome, p => p.MapFrom(x => x.Nome))
-                .ForMember(p => p.Email, p => p.MapFrom(x => x.Email))
-                .ForMember(p => p.Senha, p => p.MapFrom(x => x.Senha));
+                .ForMember(p => p.Email, p => p.MapFrom(x => x.Email));
 
             CreateMap<UsuarioAlteracaoModel, Usuario>()
-                .ForMember(p => p.Id, p => p.MapFrom(x => x.Id))
                 .ForMember(p => p.Nome, p => p.MapFrom(x => x.Nome))
-                .ForMember(p => p.Email, p => p.MapFrom(x => x.Email))
-                .ForMember(p => p.Senha, p => p.MapFrom(x => x.Senha));
+                .ForMember(p => p.Email, p => p.MapFrom(x => x.Email));
         }
     }
 }

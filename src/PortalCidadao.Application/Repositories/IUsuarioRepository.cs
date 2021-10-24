@@ -9,6 +9,6 @@ namespace PortalCidadao.Application.Repositories
         Task<Usuario> InserirAsync(Usuario usuario);
         Task<Usuario> ObterUsuarioAsync(string cpf = "", string email = "");
         Task<Usuario> VerificarEmailAsync(string email, int usuarioId);
-        Task<Usuario> AtualizarAsync(Usuario usuario);
+        Task<Usuario> AtualizarAsync(Usuario usuario, int id);
     }
 }

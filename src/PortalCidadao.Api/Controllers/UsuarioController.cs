@@ -37,13 +37,13 @@ namespace PortalCidadao.Api.Controllers
             return Ok(response);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> AlterarDados([FromBody] UsuarioAlteracaoModel usuarioAlteracaoModel)
+        [HttpPatch("{id:int}")]
+        public async Task<IActionResult> AlterarDados([FromRoute] int id, [FromBody] UsuarioAlteracaoModel usuarioAlteracaoModel)
         {
             if (usuarioAlteracaoModel is null)
                 return BadRequest();
 
-            var response = await _usuarioService.AtualizarAsync(usuarioAlteracaoModel);
+            var response = await _usuarioService.AtualizarAsync(id, usuarioAlteracaoModel);
             return Ok(response);
         }
     }

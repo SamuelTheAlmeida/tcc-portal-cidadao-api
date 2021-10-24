@@ -57,21 +57,20 @@ namespace PortalCidadao.Infra.Data.Repositories
             return await _dbConnection.QueryFirstOrDefaultAsync<Usuario>(sql, new { email, usuarioId });
         }
 
-        public async Task<Usuario> AtualizarAsync(Usuario usuario)
+        public async Task<Usuario> AtualizarAsync(Usuario usuario, int id)
         {
             usuario.Nome = string.IsNullOrEmpty(usuario.Nome) ? default : usuario.Nome;
             usuario.Email = string.IsNullOrEmpty(usuario.Email) ? default : usuario.Email;
             usuario.Senha = string.IsNullOrEmpty(usuario.Senha) ? default : usuario.Senha;
+            usuario.Id = id;
 
             const string sql = @"UPDATE Usuario 
                                 SET 
                                 Email = CASE WHEN ISNULL(@Email) THEN Email ELSE @Email END,
-                                Senha = CASE WHEN ISNULL(@Senha) THEN Senha ELSE @Senha END,
                                 Nome = CASE WHEN ISNULL(@Nome) THEN Senha ELSE @Nome END
                                 WHERE Id = @Id";
 
-            await _dbConnection.QueryAsync(sql, usuario);
-            usuario.Senha = string.Empty;
+            await _dbConnection.ExecuteAsync(sql, usuario);
             return usuario;
         }
     }
