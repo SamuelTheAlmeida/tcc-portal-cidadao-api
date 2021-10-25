@@ -8,7 +8,7 @@ namespace PortalCidadao.Infra.Data.Repositories
 {
     public class ArquivoRepository : IArquivoRepository
     {
-        private const string Diretorio = "\\tmp\\uploads-portal-cidadao";
+        private const string Diretorio = "uploads-portal-cidadao";
 
         public async Task<string> Salvar(IFormFile file)
         {
@@ -17,7 +17,8 @@ namespace PortalCidadao.Infra.Data.Repositories
             // output: 04102021_14143873_foto.jpg
             var nomeArquivo =
                 $"{ObterData(dataAtual)}_{ObterTempo(dataAtual)}_{file.FileName}";
-            var caminho = Path.Combine(Diretorio, nomeArquivo);
+            var pasta = Path.Combine(Path.GetTempPath(), Diretorio);
+            var caminho = Path.Combine(pasta, nomeArquivo);
             await using Stream stream = new FileStream(caminho, FileMode.Create);
             await file.CopyToAsync(stream);
             return nomeArquivo;
