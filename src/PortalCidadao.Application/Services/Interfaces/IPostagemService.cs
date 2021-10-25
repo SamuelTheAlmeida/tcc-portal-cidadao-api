@@ -7,7 +7,7 @@ namespace PortalCidadao.Application.Services.Interfaces
 {
     public interface IPostagemService
     {
-        Task<BaseModel<IEnumerable<PostagemModel>>> ListarTodos(string bairro, int categoriaId);
+        Task<BaseModel<IEnumerable<PostagemModel>>> ListarTodos(string bairro, int categoriaId, int subcategoriaId);
         Task<BaseModel<PostagemModel>> ObterPorId(int id);
         Task<BaseModel> Inserir(PostagemModel model, IFormFile file);
         Task<BaseModel<IEnumerable<CategoriaModel>>> ListarCategorias();
