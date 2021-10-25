@@ -7,6 +7,8 @@ namespace PortalCidadao.Domain.Enums
         [Description("Administrador")]
         Administrador = 1,
         [Description("Cidadao")]
-        Cidadao = 2
+        Cidadao = 2,
+        [Description("Especial")]
+        Especial = 3
     }
 }
