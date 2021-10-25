@@ -24,7 +24,11 @@ namespace PortalCidadao.Infra.Data.Repositories
             return nomeArquivo;
         }
 
-        public async Task<byte[]> Obter(string nomeArquivo) => await File.ReadAllBytesAsync(Path.Combine(Diretorio, nomeArquivo));
+        public async Task<byte[]> Obter(string nomeArquivo)
+        {
+            var pasta = Path.Combine(Path.GetTempPath(), Diretorio);
+            return await File.ReadAllBytesAsync(Path.Combine(pasta, nomeArquivo));
+        }
 
         public static string ObterData(DateTime dataAtual) =>
             $"{FormatarData(dataAtual.Day)}{FormatarData(dataAtual.Month)}{dataAtual.Year}";
