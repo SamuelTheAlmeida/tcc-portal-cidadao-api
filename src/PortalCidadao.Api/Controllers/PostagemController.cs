@@ -44,6 +44,9 @@ namespace PortalCidadao.Api.Controllers
         public async Task<IActionResult> ListarCategorias() =>
             Ok(await _service.ListarCategorias());
 
+        [HttpPut("{id}/{resolvido}")]
+        public async Task<IActionResult> resolverPostagem(int id, bool resolvido) =>
+            Ok(await _service.resolverPostagem(id, resolvido));
 
         [HttpGet("subcategorias")]
         public IActionResult ListarSubcategorias() =>

@@ -14,5 +14,7 @@ namespace PortalCidadao.Application.Services.Interfaces
         Task<BaseModel<IEnumerable<CategoriaModel>>> ListarCategorias();
         BaseModel<IEnumerable<EnumModel>> ListarSubcategorias();
         Task<BaseModel<IEnumerable<string>>> ListarBairros();
+        Task<BaseModel<PostagemModel>> resolverPostagem(int id, bool resolvido);
+
     }
 }

@@ -14,5 +14,7 @@ namespace PortalCidadao.Application.Repositories
         Task<IEnumerable<string>> ListarBairros();
         Task Inserir(Postagem postagem);
         Task<Postagem> ObterDetalhado(int id);
+        Task<Postagem> resolverPostagem(int id, bool resolvido);
+
     }
 }

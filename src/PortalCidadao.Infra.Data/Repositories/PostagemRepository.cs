@@ -47,7 +47,17 @@ namespace PortalCidadao.Infra.Data.Repositories
                 return p;
             }, new { categoria });
         }
+ public async Task<Postagem> resolverPostagem(int id, bool resolvido)
+        {
+            const string sql = @"
+                    UPDATE Postagem P                    
+                    SET P.Resolvido = @resolvido
+                    WHERE P.Id = @id";                  
+                    
+                 var resultado = await _dbConnection.QueryAsync(sql, new { id, resolvido });            
 
+            return resultado.FirstOrDefault(); 
+        }
         public async Task<Postagem> ObterPorId(int id)
         {
             const string sql = @"
