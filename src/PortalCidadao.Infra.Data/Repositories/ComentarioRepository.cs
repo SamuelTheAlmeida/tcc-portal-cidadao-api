@@ -33,11 +33,17 @@ namespace PortalCidadao.Infra.Data.Repositories
          public async Task<IEnumerable<Comentario>> ListarTodos(int postagemId)
         {
             const string sql = @"
-                    SELECT C.* 
+                    SELECT C.*, U.*
                     FROM Comentario C 
+                    INNER JOIN Usuario U
+                    ON C.UsuarioId = U.Id
                     WHERE C.PostagemId = @postagemId";
 
-            return await _dbConnection.QueryAsync<Comentario>(sql, new {postagemId});
+            return await _dbConnection.QueryAsync<Comentario, Usuario, Comentario>(sql, (c, u) =>
+            {
+                c.NomeUsuario = u.Nome;
+                return c;
+            }, new {postagemId});
 
         }
 

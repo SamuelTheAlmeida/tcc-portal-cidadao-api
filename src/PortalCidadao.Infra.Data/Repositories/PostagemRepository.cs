@@ -18,19 +18,26 @@ namespace PortalCidadao.Infra.Data.Repositories
             _dbConnection = dbConnection;
         }
 
-        public async Task<IEnumerable<Postagem>> ListarTodos(string bairro)
+        public async Task<IEnumerable<Postagem>> ListarTodos(string bairro, int categoriaId, int subcategoriaId)
         {
+            var bairroParam = string.IsNullOrEmpty(bairro) ? default : bairro;
+            var categoriaIdParam = categoriaId > 0 ? (int?)categoriaId : null;
+            var subCategoriaIdParam = subcategoriaId > 0 ? (int?)subcategoriaId : null;
+
             const string sql = @"
                     SELECT P.*, C.* 
                     FROM Postagem P 
-                    INNER JOIN Categoria C ON C.Id = P.CategoriaId
-                    WHERE P.Bairro = IFNULL(@bairro, P.Bairro)";
+                    INNER JOIN Categoria C
+                    ON C.Id = P.CategoriaId
+                    WHERE P.Bairro = IFNULL(@bairroParam, P.Bairro) AND 
+                    P.CategoriaId = IFNULL(@categoriaIdParam, P.CategoriaId) AND
+                    P.Subcategoria = IFNULL(@subCategoriaIdParam, P.Subcategoria)";
 
             return await _dbConnection.QueryAsync<Postagem, Categoria, Postagem>(sql, (p, c) =>
             {
                 p.Categoria = c;
                 return p;
-            }, new { bairro });
+            }, new { bairroParam, categoriaIdParam, subCategoriaIdParam });
         }
 
         public async Task<IEnumerable<Postagem>> ListarPorCategoria(string categoria)

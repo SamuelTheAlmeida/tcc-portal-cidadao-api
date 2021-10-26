@@ -26,7 +26,7 @@ namespace PortalCidadao.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] UsuarioCadastroModel usuarioCadastroModel)
+        public async Task<IActionResult> Cadastro([FromBody] UsuarioCadastroModel usuarioCadastroModel)
         {
             if (usuarioCadastroModel is null)
             {
@@ -34,6 +34,16 @@ namespace PortalCidadao.Api.Controllers
             }
 
             var response = await _usuarioService.InserirAsync(usuarioCadastroModel);
+            return Ok(response);
+        }
+
+        [HttpPatch("{id:int}")]
+        public async Task<IActionResult> AlterarDados([FromRoute] int id, [FromBody] UsuarioAlteracaoModel usuarioAlteracaoModel)
+        {
+            if (usuarioAlteracaoModel is null)
+                return BadRequest();
+
+            var response = await _usuarioService.AtualizarAsync(id, usuarioAlteracaoModel);
             return Ok(response);
         }
     }
