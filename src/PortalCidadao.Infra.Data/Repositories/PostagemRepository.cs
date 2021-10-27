@@ -30,6 +30,7 @@ namespace PortalCidadao.Infra.Data.Repositories
                     INNER JOIN Categoria C
                     ON C.Id = P.CategoriaId
                     WHERE P.Bairro = IFNULL(@bairroParam, P.Bairro) AND 
+                    P.Resolvido = 0 AND
                     P.CategoriaId = IFNULL(@categoriaIdParam, P.CategoriaId) AND
                     P.Subcategoria = IFNULL(@subCategoriaIdParam, P.Subcategoria)";
 
