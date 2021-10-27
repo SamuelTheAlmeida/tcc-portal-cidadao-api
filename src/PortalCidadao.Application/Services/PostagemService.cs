@@ -25,6 +25,9 @@ namespace PortalCidadao.Application.Services
             _mapper = mapper;
         }
 
+                 public async Task<BaseModel<PostagemModel>> resolverPostagem(int id, bool resolvido) =>
+          new(true, EMensagens.RealizadaComSucesso, _mapper.Map<PostagemModel>(await _repository.resolverPostagem(id,resolvido)));
+
         public async Task<BaseModel<IEnumerable<PostagemModel>>> ListarTodos(string bairro, int categoriaId, int subCategoriaId) =>
             new(true, EMensagens.RealizadaComSucesso, _mapper.Map<IEnumerable<PostagemModel>>(
                 await _repository.ListarTodos(bairro, categoriaId, subCategoriaId)));
