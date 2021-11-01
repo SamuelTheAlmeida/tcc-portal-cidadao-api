@@ -48,6 +48,16 @@ namespace PortalCidadao.Infra.Data.Repositories
             return await _dbConnection.QueryFirstOrDefaultAsync<Usuario>(sql, new { cpf, email });
         }
 
+        public async Task<Usuario> ObterUsuarioPorIdAsync(int id)
+        {
+            var sql = @"SELECT U.*
+                        FROM Usuario U
+                        WHERE 1=1 
+                        AND U.Id = @id";
+
+            return await _dbConnection.QueryFirstOrDefaultAsync<Usuario>(sql, new { id });
+        }
+
         public async Task<Usuario> VerificarEmailAsync(string email, int usuarioId)
         {
             var sql = @"SELECT U.*
