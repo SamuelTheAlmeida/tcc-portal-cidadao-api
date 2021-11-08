@@ -16,17 +16,20 @@ namespace PortalCidadao.Application.Services
         private readonly ITokenService _tokenService;
         private readonly LoginModelValidator _loginModelValidator;
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IEmailRepository _emailRepository;
 
         public UsuarioService(IMapper mapper,
             ITokenService tokenService,
             IUsuarioRepository usuarioRepository,
-            LoginModelValidator loginModelValidator
+            LoginModelValidator loginModelValidator,
+            IEmailRepository emailRepository
             )
         {
             _mapper = mapper;
             _tokenService = tokenService;
             _usuarioRepository = usuarioRepository;
             _loginModelValidator = loginModelValidator;
+            _emailRepository = emailRepository;
         }
 
 
@@ -76,6 +79,11 @@ namespace PortalCidadao.Application.Services
             await _usuarioRepository.AtualizarAsync(usuario, id);
             var result = _mapper.Map<UsuarioModel>(await _usuarioRepository.ObterUsuarioPorIdAsync(id));
             return new BaseModel<UsuarioModel>(true, EMensagens.RealizadaComSucesso, result);
+        }
+
+        public async Task RedefinirSenha()
+        {
+            await _emailRepository.RedefinirSenha();
         }
     }
 }

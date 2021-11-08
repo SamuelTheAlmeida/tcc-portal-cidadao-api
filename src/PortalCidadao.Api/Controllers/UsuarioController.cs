@@ -46,5 +46,12 @@ namespace PortalCidadao.Api.Controllers
             var response = await _usuarioService.AtualizarAsync(id, usuarioAlteracaoModel);
             return Ok(response);
         }
+
+        [HttpGet("redefinir-senha")]
+        public async Task<IActionResult> RedefinirSenha()
+        {
+            await _usuarioService.RedefinirSenha();
+            return Ok();
+        }
     }
 }
