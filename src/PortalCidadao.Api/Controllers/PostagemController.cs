@@ -41,6 +41,12 @@ namespace PortalCidadao.Api.Controllers
         public async Task<IActionResult> ListarCategorias() =>
             Ok(await _service.ListarCategorias());
 
+            
+
+         [HttpPut("remover/{id}/{excluir}")]
+        public async Task<IActionResult> removerPostagem(int id, bool excluir) =>
+            Ok(await _service.removerPostagem(id, excluir));
+
         [HttpPut("{id}/{resolvido}")]
         public async Task<IActionResult> resolverPostagem(int id, bool resolvido) =>
             Ok(await _service.resolverPostagem(id, resolvido));

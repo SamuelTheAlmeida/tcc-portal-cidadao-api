@@ -32,7 +32,8 @@ namespace PortalCidadao.Infra.Data.Repositories
                     WHERE P.Bairro = IFNULL(@bairroParam, P.Bairro) AND 
                     P.Resolvido = 0 AND
                     P.CategoriaId = IFNULL(@categoriaIdParam, P.CategoriaId) AND
-                    P.Subcategoria = IFNULL(@subCategoriaIdParam, P.Subcategoria)";
+                    P.Subcategoria = IFNULL(@subCategoriaIdParam, P.Subcategoria)
+                    AND P.Excluida = 0";
 
             return await _dbConnection.QueryAsync<Postagem, Categoria, Postagem>(sql, (p, c) =>
             {
@@ -47,7 +48,8 @@ namespace PortalCidadao.Infra.Data.Repositories
                     SELECT P.*, C.* 
                     FROM Postagem P 
                     INNER JOIN Categoria C ON C.Id = P.CategoriaId
-                    WHERE C.Nome = @categoria";
+                    WHERE C.Nome = @categoria
+                    AND P.Excluida = 0";
 
             return await _dbConnection.QueryAsync<Postagem, Categoria, Postagem>(sql, (p, c) =>
             {
@@ -81,6 +83,21 @@ namespace PortalCidadao.Infra.Data.Repositories
             }, new { id });
 
             return resultado.FirstOrDefault();
+        }
+        public async Task<Postagem> removerPostagem(int id, bool excluir)
+        {
+            
+            const string sql = @"
+                    UPDATE Postagem P
+                    SET P.Excluida = @excluir                   
+                    WHERE P.Id = @id";
+
+                var resultado = await _dbConnection.QueryAsync(sql, new {id, excluir});            
+
+            return resultado.FirstOrDefault();           
+
+                            
+
         }
 
         public async Task<Postagem> ObterDetalhado(int id)
@@ -137,8 +154,8 @@ namespace PortalCidadao.Infra.Data.Repositories
         public async Task Inserir(Postagem postagem)
         {
             const string sql = @"INSERT INTO Postagem 
-                        (CategoriaId, Subcategoria, Titulo, Descricao, ImagemUrl, Latitude, Longitude, Bairro, UsuarioId, DataCadastro, Resolvido)
-                    VALUES(@CategoriaId, @Subcategoria, @Titulo, @Descricao, @ImagemUrl, @Latitude, @Longitude, @Bairro, @UsuarioId, NOW(), @Resolvido); ";
+                        (CategoriaId, Subcategoria, Titulo, Descricao, ImagemUrl, Latitude, Longitude, Bairro, UsuarioId, DataCadastro, Resolvido, Excluida)
+                    VALUES(@CategoriaId, @Subcategoria, @Titulo, @Descricao, @ImagemUrl, @Latitude, @Longitude, @Bairro, @UsuarioId, NOW(), @Resolvido, 0); ";
 
             await _dbConnection.QueryAsync(sql, postagem);
         }

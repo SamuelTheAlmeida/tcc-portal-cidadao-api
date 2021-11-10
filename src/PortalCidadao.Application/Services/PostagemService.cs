@@ -53,6 +53,8 @@ namespace PortalCidadao.Application.Services
         public async Task<BaseModel<IEnumerable<string>>> ListarBairros() =>
           new(true, EMensagens.RealizadaComSucesso, await _repository.ListarBairros());
 
+         public async Task<BaseModel<PostagemModel>> removerPostagem(int id, bool excluir) =>
+          new(true, EMensagens.RealizadaComSucesso, _mapper.Map<PostagemModel>(await _repository.removerPostagem(id, excluir)));
         //public async Task<BaseModel<IEnumerable<OrgaoModel>>> ListarOrgaos() =>
         //    new(true, EMensagens.RealizadaComSucesso, _mapper.Map<IEnumerable<OrgaoModel>>(
         //        await _repository.ListarOrgaos()));

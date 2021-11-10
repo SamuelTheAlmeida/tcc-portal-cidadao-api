@@ -20,6 +20,10 @@ namespace PortalCidadao.Api.Controllers
             [HttpPost]
         public async Task<IActionResult> Inserir(Comentario model) =>
             Ok(await _service.Inserir(model));
+
+            [HttpDelete("{id}")]
+        public async Task<IActionResult> removerComentario(int id) =>
+            Ok(await _service.removerComentario(id));
             
 
         [HttpGet("{postagemId}")]

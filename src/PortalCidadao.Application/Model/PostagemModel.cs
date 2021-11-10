@@ -20,5 +20,6 @@ namespace PortalCidadao.Application.Model
         public UsuarioModel Usuario { get; set; }
         public long Curtidas { get; set; }
         public long Descurtidas { get; set; }
+        public bool Excluida {get; set;}
     }
 }
