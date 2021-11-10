@@ -12,6 +12,9 @@ namespace PortalCidadao.Infra.Data.Repositories
 
         public async Task<string> Salvar(IFormFile file)
         {
+            if (file == null)
+                return string.Empty;
+
             var dataAtual = DateTime.Now;
 
             // output: 04102021_14143873_foto.jpg

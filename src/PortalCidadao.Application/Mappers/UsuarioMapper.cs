@@ -19,12 +19,14 @@ namespace PortalCidadao.Application.Mappers
                 .ForMember(p => p.PerfilId, p => p.MapFrom(x => x.Perfil.GetEnumValue()))
                 .ForMember(p => p.Perfil, p => p.MapFrom(x => new EnumModel(x.Perfil)))
                 .ForMember(p => p.Senha, p => p.MapFrom(x => x.Senha))
+                .ForMember(p => p.TokenRedefinicaoSenha, p => p.MapFrom(x => x.TokenRedefinicaoSenha))
                 .ForMember(p => p.Token, p => p.Ignore());
 
             CreateMap<UsuarioModel, Usuario>()
                 .ForMember(p => p.Id, p => p.MapFrom(x => x.Id))
                 .ForMember(p => p.Email, p => p.MapFrom(x => x.Email))
                 .ForMember(p => p.Perfil, p => p.MapFrom(x => x.PerfilId.Value.GetEnum<EPerfis>()))
+                .ForMember(p => p.TokenRedefinicaoSenha, p => p.MapFrom(x => x.TokenRedefinicaoSenha))
                 .ForMember(p => p.Senha, p => p.MapFrom(x => x.Senha));
 
         }

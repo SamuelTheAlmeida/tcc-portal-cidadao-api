@@ -14,6 +14,7 @@ namespace PortalCidadao.Application.Model
         public bool EmailConfirmado { get; set; }
         public DateTime DataCadastro { get; set; }
         public string Token { get; set; }
+        public Guid? TokenRedefinicaoSenha { get; set; }
     }
 }
 

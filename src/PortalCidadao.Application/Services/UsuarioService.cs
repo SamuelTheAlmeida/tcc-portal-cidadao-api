@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices.ComTypes;
-using AutoMapper;
+﻿using AutoMapper;
 using PortalCidadao.Application.Model;
 using PortalCidadao.Application.Repositories;
 using PortalCidadao.Application.Services.Interfaces;
@@ -7,6 +6,7 @@ using PortalCidadao.Application.Validators;
 using PortalCidadao.Domain.Enums;
 using PortalCidadao.Domain.Models;
 using PortalCidadao.Shared.Extensions;
+using System;
 using System.Threading.Tasks;
 
 namespace PortalCidadao.Application.Services
@@ -17,17 +17,20 @@ namespace PortalCidadao.Application.Services
         private readonly ITokenService _tokenService;
         private readonly LoginModelValidator _loginModelValidator;
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IEmailRepository _emailRepository;
 
         public UsuarioService(IMapper mapper,
             ITokenService tokenService,
             IUsuarioRepository usuarioRepository,
-            LoginModelValidator loginModelValidator
+            LoginModelValidator loginModelValidator,
+            IEmailRepository emailRepository
             )
         {
             _mapper = mapper;
             _tokenService = tokenService;
             _usuarioRepository = usuarioRepository;
             _loginModelValidator = loginModelValidator;
+            _emailRepository = emailRepository;
         }
 
 
@@ -64,18 +67,41 @@ namespace PortalCidadao.Application.Services
             var result = _mapper.Map<UsuarioCadastroModel>(await _usuarioRepository.InserirAsync(usuario));
             return new BaseModel<UsuarioCadastroModel>(true, EMensagens.RealizadaComSucesso, result);
         }
-        public async Task<BaseModel<UsuarioAlteracaoModel>> AtualizarAsync(int id, UsuarioAlteracaoModel usuarioAlteracaoModel)
+        public async Task<BaseModel<UsuarioModel>> AtualizarAsync(int id, UsuarioAlteracaoModel usuarioAlteracaoModel)
         {
             if (!string.IsNullOrEmpty(usuarioAlteracaoModel.Email))
             {
                 var emailJaExiste = await _usuarioRepository.VerificarEmailAsync(usuarioAlteracaoModel.Email, id);
                 if (emailJaExiste is not null)
-                    return new BaseModel<UsuarioAlteracaoModel>(false, EMensagens.UsuarioJaCadastrado);
+                    return new BaseModel<UsuarioModel>(false, EMensagens.UsuarioJaCadastrado);
             }
 
             var usuario = _mapper.Map<Usuario>(usuarioAlteracaoModel);
-            var result = _mapper.Map<UsuarioAlteracaoModel>(await _usuarioRepository.AtualizarAsync(usuario, id));
-            return new BaseModel<UsuarioAlteracaoModel>(true, EMensagens.RealizadaComSucesso, result);
+            await _usuarioRepository.AtualizarAsync(usuario, id);
+            var result = _mapper.Map<UsuarioModel>(await _usuarioRepository.ObterUsuarioPorIdAsync(id));
+            return new BaseModel<UsuarioModel>(true, EMensagens.RealizadaComSucesso, result);
+        }
+
+        public async Task EsqueciSenha(string email)
+        {
+            var usuario = await _usuarioRepository.ObterUsuarioAsync(email: email);
+            if (usuario == null)
+                return;
+
+            var tokenRedefinicaoSenha = Guid.NewGuid();
+            await _usuarioRepository.AtualizarTokenRedefinicaoSenha(usuario.Id, tokenRedefinicaoSenha);
+            await _emailRepository.EsqueciSenha(usuario.Nome, email, tokenRedefinicaoSenha);
+        }
+
+        public async Task RedefinirSenha(RedefinicaoSenhaModel redefinicaoSenhaModel)
+        {
+            var usuario = await _usuarioRepository.BuscarPorTokenRedefinicaoSenha(redefinicaoSenhaModel.Token);
+            if (usuario == null)
+                return;
+
+            usuario.Senha = redefinicaoSenhaModel.NovaSenha;
+            await _usuarioRepository.AtualizarAsync(usuario, usuario.Id);
+            await _usuarioRepository.AtualizarTokenRedefinicaoSenha(usuario.Id, null);
         }
     }
 }

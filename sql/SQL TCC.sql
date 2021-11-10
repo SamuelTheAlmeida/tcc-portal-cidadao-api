@@ -1,6 +1,5 @@
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
 
-CREATE DATABASE PortalCidadao;
 USE PortalCidadao;
 
 CREATE TABLE Orgao
@@ -29,7 +28,8 @@ CREATE TABLE Usuario
 	Senha varchar(32) not null,
 	Perfil tinyint unsigned not null,
 	EmailConfirmado tinyint not null,
-	DataCadastro DATETIME not null
+	DataCadastro DATETIME not null,
+	TokenRedefinicaoSenha CHAR(36),
 );
 
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
