@@ -22,6 +22,7 @@ namespace PortalCidadao.Domain.Models
 		public Usuario Usuario { get; set; }
 		public long Curtidas { get; set; }
 		public long Descurtidas { get; set; }
+		public bool Excluida {get; set;}
     }
 }
 

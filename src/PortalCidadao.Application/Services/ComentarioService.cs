@@ -32,7 +32,9 @@ namespace PortalCidadao.Application.Services
             await _repository.Inserir(_mapper.Map<Comentario>(comentario));
             return new(true, EMensagens.RealizadaComSucesso);
         }
-
+       
+        public async Task<BaseModel<ComentarioModel>> removerComentario(int id) =>
+          new(true, EMensagens.RealizadaComSucesso, _mapper.Map<ComentarioModel>(await _repository.removerComentario(id)));
 
 
 

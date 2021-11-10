@@ -11,6 +11,6 @@ namespace PortalCidadao.Application.Services.Interfaces
 
         Task<BaseModel> Inserir(Comentario comentario);
         Task<BaseModel<IEnumerable<ComentarioModel>>> ListarTodos(int postagemId);
-
+        Task<BaseModel<ComentarioModel>> removerComentario(int id);
     }
 }

@@ -28,6 +28,22 @@ namespace PortalCidadao.Infra.Data.Repositories
             await _dbConnection.QueryAsync(sql, comentario);
 
         }
+        
+
+        public async Task<Comentario> removerComentario(int id)
+        {
+            const string sql = @"
+                    DELETE C 
+                    FROM Comentario C                     
+                    WHERE C.Id = @id";
+
+                var resultado = await _dbConnection.QueryAsync(sql, new {id});            
+
+            return resultado.FirstOrDefault();           
+
+                            
+
+        }
 
 
          public async Task<IEnumerable<Comentario>> ListarTodos(int postagemId)

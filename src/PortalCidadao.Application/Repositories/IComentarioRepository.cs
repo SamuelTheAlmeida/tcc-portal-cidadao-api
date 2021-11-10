@@ -10,6 +10,8 @@ namespace PortalCidadao.Application.Repositories
        
         Task Inserir(Comentario comentario);
         Task<IEnumerable<Comentario>> ListarTodos(int postagemId);
+        Task<Comentario> removerComentario(int id);
+
        
         
     }
