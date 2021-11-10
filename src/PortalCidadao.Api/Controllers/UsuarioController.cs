@@ -47,10 +47,17 @@ namespace PortalCidadao.Api.Controllers
             return Ok(response);
         }
 
-        [HttpGet("redefinir-senha")]
-        public async Task<IActionResult> RedefinirSenha()
+        [HttpPost("esqueci-senha/{email}")]
+        public async Task<IActionResult> EsqueciSenha([FromRoute] string email)
         {
-            await _usuarioService.RedefinirSenha();
+            await _usuarioService.EsqueciSenha(email);
+            return Ok();
+        }
+
+        [HttpPost("redefinir-senha")]
+        public async Task<IActionResult> RedefinirSenha([FromBody] RedefinicaoSenhaModel redefinicaoSenhaModel)
+        {
+            await _usuarioService.RedefinirSenha(redefinicaoSenhaModel);
             return Ok();
         }
     }

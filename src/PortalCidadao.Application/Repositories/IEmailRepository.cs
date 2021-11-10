@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace PortalCidadao.Application.Repositories
 {
     public interface IEmailRepository
     {
-        Task RedefinirSenha();
+        Task EsqueciSenha(string nome, string email, Guid tokenRedefinicao);
     }
 }

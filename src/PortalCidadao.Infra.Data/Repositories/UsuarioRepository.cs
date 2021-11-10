@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using PortalCidadao.Application.Repositories;
 using PortalCidadao.Domain.Models;
+using System;
 using System.Data;
 using System.Threading.Tasks;
 
@@ -19,7 +20,7 @@ namespace PortalCidadao.Infra.Data.Repositories
             var sql = @"SELECT U.*
                         FROM Usuario U
                         WHERE 1=1 
-                        AND (email = @login OR cpf = @login)
+                        AND (LOWER(email) = LOWER(@login) OR cpf = @login)
                         AND senha = @senha";
 
             return await _dbConnection.QueryFirstOrDefaultAsync<Usuario>(sql, new { login, senha });
@@ -43,7 +44,7 @@ namespace PortalCidadao.Infra.Data.Repositories
             var sql = @"SELECT U.*
                         FROM Usuario U
                         WHERE 1=1 
-                        AND (U.Cpf = @cpf OR U.Email = @email)";
+                        AND (U.Cpf = @cpf OR LOWER(U.Email) = LOWER(@email))";
 
             return await _dbConnection.QueryFirstOrDefaultAsync<Usuario>(sql, new { cpf, email });
         }
@@ -62,7 +63,7 @@ namespace PortalCidadao.Infra.Data.Repositories
         {
             var sql = @"SELECT U.*
                         FROM Usuario U
-                        WHERE U.Email = @email AND U.Id != @usuarioId";
+                        WHERE LOWER(U.Email) = LOWER(@email) AND U.Id != @usuarioId";
 
             return await _dbConnection.QueryFirstOrDefaultAsync<Usuario>(sql, new { email, usuarioId });
         }
@@ -82,6 +83,25 @@ namespace PortalCidadao.Infra.Data.Repositories
 
             await _dbConnection.ExecuteAsync(sql, usuario);
             return usuario;
+        }
+
+        public async Task AtualizarTokenRedefinicaoSenha(int usuarioId, Guid? token)
+        {
+            const string sql = @"UPDATE Usuario 
+                                SET 
+                                TokenRedefinicaoSenha = @token
+                                WHERE Id = @usuarioId";
+
+            await _dbConnection.ExecuteAsync(sql, new { usuarioId, token });
+        }
+
+        public async Task<Usuario> BuscarPorTokenRedefinicaoSenha(Guid? token)
+        {
+            const string sql = @"SELECT U.* 
+                                FROM Usuario U
+                                WHERE TokenRedefinicaoSenha = @token";
+
+            return await _dbConnection.QueryFirstOrDefaultAsync<Usuario>(sql, new { token });
         }
     }
 }

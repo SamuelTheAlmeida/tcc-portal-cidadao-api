@@ -13,6 +13,7 @@ namespace PortalCidadao.Domain.Models
 		public EPerfis Perfil { get; set; }
 		public bool EmailConfirmado { get; set; }
 		public DateTime DataCadastro { get; set; }
+		public Guid? TokenRedefinicaoSenha { get; set; }
 	}
 }
 

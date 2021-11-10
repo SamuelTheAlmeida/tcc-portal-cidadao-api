@@ -6,6 +6,7 @@ using PortalCidadao.Application.Validators;
 using PortalCidadao.Domain.Enums;
 using PortalCidadao.Domain.Models;
 using PortalCidadao.Shared.Extensions;
+using System;
 using System.Threading.Tasks;
 
 namespace PortalCidadao.Application.Services
@@ -81,9 +82,26 @@ namespace PortalCidadao.Application.Services
             return new BaseModel<UsuarioModel>(true, EMensagens.RealizadaComSucesso, result);
         }
 
-        public async Task RedefinirSenha()
+        public async Task EsqueciSenha(string email)
         {
-            await _emailRepository.RedefinirSenha();
+            var usuario = await _usuarioRepository.ObterUsuarioAsync(email: email);
+            if (usuario == null)
+                return;
+
+            var tokenRedefinicaoSenha = Guid.NewGuid();
+            await _usuarioRepository.AtualizarTokenRedefinicaoSenha(usuario.Id, tokenRedefinicaoSenha);
+            await _emailRepository.EsqueciSenha(usuario.Nome, email, tokenRedefinicaoSenha);
+        }
+
+        public async Task RedefinirSenha(RedefinicaoSenhaModel redefinicaoSenhaModel)
+        {
+            var usuario = await _usuarioRepository.BuscarPorTokenRedefinicaoSenha(redefinicaoSenhaModel.Token);
+            if (usuario == null)
+                return;
+
+            usuario.Senha = redefinicaoSenhaModel.NovaSenha;
+            await _usuarioRepository.AtualizarAsync(usuario, usuario.Id);
+            await _usuarioRepository.AtualizarTokenRedefinicaoSenha(usuario.Id, null);
         }
     }
 }

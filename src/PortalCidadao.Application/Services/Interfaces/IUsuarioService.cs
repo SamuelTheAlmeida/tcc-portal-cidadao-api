@@ -9,6 +9,7 @@ namespace PortalCidadao.Application.Services.Interfaces
         Task<BaseModel<UsuarioModel>> Autenticar(LoginModel loginModel);
         Task<BaseModel<UsuarioCadastroModel>> InserirAsync(UsuarioCadastroModel usuarioCadastroModel);
         Task<BaseModel<UsuarioModel>> AtualizarAsync(int id, UsuarioAlteracaoModel usuarioAlteracaoModel);
-        Task RedefinirSenha();
+        Task EsqueciSenha(string email);
+        Task RedefinirSenha(RedefinicaoSenhaModel redefinicaoSenhaModel);
     }
 }
