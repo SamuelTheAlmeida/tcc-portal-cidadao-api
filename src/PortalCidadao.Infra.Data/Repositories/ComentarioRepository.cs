@@ -2,7 +2,6 @@
 using PortalCidadao.Domain.Models;
 using System.Collections.Generic;
 using System.Data;
-using PortalCidadao.Api.Domain.Models;
 using PortalCidadao.Application.Repositories;
 using System.Threading.Tasks;
 using System.Linq;
@@ -40,20 +39,17 @@ namespace PortalCidadao.Infra.Data.Repositories
                 var resultado = await _dbConnection.QueryAsync(sql, new {id});            
 
             return resultado.FirstOrDefault();           
-
-                            
-
         }
 
-
          public async Task<IEnumerable<Comentario>> ListarTodos(int postagemId)
-        {
+         {
             const string sql = @"
                     SELECT C.*, U.*
                     FROM Comentario C 
                     INNER JOIN Usuario U
                     ON C.UsuarioId = U.Id
-                    WHERE C.PostagemId = @postagemId";
+                    WHERE C.PostagemId = @postagemId
+                    ORDER BY C.DataCadastro DESC";
 
             return await _dbConnection.QueryAsync<Comentario, Usuario, Comentario>(sql, (c, u) =>
             {
@@ -61,7 +57,7 @@ namespace PortalCidadao.Infra.Data.Repositories
                 return c;
             }, new {postagemId});
 
-        }
+         }
 
          
     }
