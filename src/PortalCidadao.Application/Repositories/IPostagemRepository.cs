@@ -9,6 +9,8 @@ namespace PortalCidadao.Application.Repositories
     {
         Task<IEnumerable<Postagem>> ListarTodos(string bairro, int categoriaId, int subcategoriaId);
         Task<Postagem> ObterPorId(int id);
+        Task<IEnumerable<Postagem>> PostagensAbertasPorMes(string mes);
+
         Task<IEnumerable<Categoria>> ListarCategorias();
         Task<Postagem> removerPostagem(int id, bool excluir);
 
