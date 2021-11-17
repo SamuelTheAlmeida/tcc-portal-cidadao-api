@@ -6,6 +6,8 @@ using PortalCidadao.Api.Domain.Models;
 using PortalCidadao.Application.Repositories;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Diagnostics;
+
 
 namespace PortalCidadao.Infra.Data.Repositories
 {
@@ -23,7 +25,7 @@ namespace PortalCidadao.Infra.Data.Repositories
             var bairroParam = string.IsNullOrEmpty(bairro) ? default : bairro;
             var categoriaIdParam = categoriaId > 0 ? (int?)categoriaId : null;
             var subCategoriaIdParam = subcategoriaId > 0 ? (int?)subcategoriaId : null;
-
+           
             const string sql = @"
                     SELECT P.*, C.* 
                     FROM Postagem P 
@@ -32,7 +34,7 @@ namespace PortalCidadao.Infra.Data.Repositories
                     WHERE P.Bairro = IFNULL(@bairroParam, P.Bairro) AND 
                     P.Resolvido = 0 AND
                     P.CategoriaId = IFNULL(@categoriaIdParam, P.CategoriaId) AND
-                    P.Subcategoria = IFNULL(@subCategoriaIdParam, P.Subcategoria)
+                    P.Subcategoria = IFNULL(@subCategoriaIdParam, P.Subcategoria)                    
                     AND P.Excluida = 0";
 
             return await _dbConnection.QueryAsync<Postagem, Categoria, Postagem>(sql, (p, c) =>
@@ -40,6 +42,21 @@ namespace PortalCidadao.Infra.Data.Repositories
                 p.Categoria = c;
                 return p;
             }, new { bairroParam, categoriaIdParam, subCategoriaIdParam });
+        }
+
+         public async Task<IEnumerable<Postagem>> PostagensAbertasPorMes(string mes)
+        {            
+            var mesParam = string.IsNullOrEmpty(mes) ? default : mes;
+
+
+            const string sql = @"
+                    SELECT P.* 
+                    FROM Postagem P                     
+                    WHERE P.Resolvido = 0 AND                    
+                    MONTH(P.DataCadastro) = IFNULL(@mesParam, MONTH(P.DataCadastro))
+                    AND P.Excluida = 0";
+
+           return await _dbConnection.QueryAsync<Postagem>(sql, new {mesParam});
         }
 
         public async Task<IEnumerable<Postagem>> ListarPorCategoria(string categoria)

@@ -32,6 +32,10 @@ namespace PortalCidadao.Application.Services
             new(true, EMensagens.RealizadaComSucesso, _mapper.Map<IEnumerable<PostagemModel>>(
                 await _repository.ListarTodos(bairro, categoriaId, subCategoriaId)));
 
+   public async Task<BaseModel<IEnumerable<PostagemModel>>> PostagensAbertasPorMes(string mes) =>
+            new(true, EMensagens.RealizadaComSucesso, _mapper.Map<IEnumerable<PostagemModel>>(
+                await _repository.PostagensAbertasPorMes(mes)));
+                
         public async Task<BaseModel<PostagemModel>> ObterPorId(int id) =>
           new(true, EMensagens.RealizadaComSucesso, _mapper.Map<PostagemModel>(await _repository.ObterDetalhado(id)));
 

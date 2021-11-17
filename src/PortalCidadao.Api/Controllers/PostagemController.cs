@@ -21,6 +21,10 @@ namespace PortalCidadao.Api.Controllers
         public async Task<IActionResult> ListarTodos(string bairro, int categoriaId, int subcategoriaId) =>
              Ok(await _service.ListarTodos(bairro, categoriaId, subcategoriaId));
 
+        [HttpGet("mes/{mes}")]
+        public async Task<IActionResult> PostagensAbertasPorMes(string mes) =>
+             Ok(await _service.PostagensAbertasPorMes(mes)); 
+
         [HttpGet("{id}")]
         public async Task<IActionResult> ObterPorId(int id) =>
              Ok(await _service.ObterPorId(id));

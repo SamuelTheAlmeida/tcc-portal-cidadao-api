@@ -10,6 +10,7 @@ namespace PortalCidadao.Application.Services.Interfaces
         Task<BaseModel<IEnumerable<PostagemModel>>> ListarTodos(string bairro, int categoriaId, int subcategoriaId);
         Task<BaseModel<PostagemModel>> ObterPorId(int id);
         Task<BaseModel<PostagemModel>> removerPostagem(int id, bool excluir);
+        Task<BaseModel<IEnumerable<PostagemModel>>> PostagensAbertasPorMes(string mes);
 
         Task<BaseModel> Inserir(PostagemModel model, IFormFile file);
         Task<BaseModel<IEnumerable<CategoriaModel>>> ListarCategorias();
