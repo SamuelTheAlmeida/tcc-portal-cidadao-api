@@ -7,6 +7,7 @@ namespace PortalCidadao.Application.Repositories
     public interface IDashboardRepository
     {
         Task<IEnumerable<DashboardCategoria>> ObterDashboardCategoria();
+        Task<IEnumerable<DashboardBairros>> ObterDashboardBairros();
         Task<int> TotalPostagens();
     }
 }

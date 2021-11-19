@@ -19,5 +19,11 @@ namespace PortalCidadao.Api.Controllers
         {
             return Ok(await _service.ObterDashboardCategorias());
         }
+
+        [HttpGet("bairros")]
+        public async Task<IActionResult> Bairros()
+        {
+            return Ok(await _service.ObterDashboardBairros());
+        }
     }
 }

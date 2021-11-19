@@ -2,19 +2,21 @@
 using PortalCidadao.Application.Repositories;
 using PortalCidadao.Application.Services.Interfaces;
 using PortalCidadao.Domain.Enums;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace PortalCidadao.Application.Services
 {
     public class DashboardService : IDashboardService
     {
         private readonly IDashboardRepository _dashboardRepository;
-        public DashboardService(IDashboardRepository dashboardRepository)
+        private readonly IMapper _mapper;
+        public DashboardService(IDashboardRepository dashboardRepository, IMapper mapper)
         {
             _dashboardRepository = dashboardRepository;
+            _mapper = mapper;
         }
 
         public async Task<BaseModel<IEnumerable<DashboardCategoriasModel>>> ObterDashboardCategorias()
@@ -28,6 +30,14 @@ namespace PortalCidadao.Application.Services
             });
 
             return new BaseModel<IEnumerable<DashboardCategoriasModel>>(sucesso: true, EMensagens.RealizadaComSucesso, dados);
+        }
+
+        public async Task<BaseModel<IEnumerable<DashboardBairrosModel>>> ObterDashboardBairros()
+        {
+            var dashboardBairros = await _dashboardRepository.ObterDashboardBairros();
+            var dados = _mapper.Map<IEnumerable<DashboardBairrosModel>>(dashboardBairros);
+
+            return new BaseModel<IEnumerable<DashboardBairrosModel>>(sucesso: true, EMensagens.RealizadaComSucesso, dados);
         }
     }
 }

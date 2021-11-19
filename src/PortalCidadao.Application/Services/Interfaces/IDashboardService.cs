@@ -7,5 +7,6 @@ namespace PortalCidadao.Application.Services.Interfaces
     public interface IDashboardService
     {
         Task<BaseModel<IEnumerable<DashboardCategoriasModel>>> ObterDashboardCategorias();
+        Task<BaseModel<IEnumerable<DashboardBairrosModel>>> ObterDashboardBairros();
     }
 }

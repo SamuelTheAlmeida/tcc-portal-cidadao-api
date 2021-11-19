@@ -30,6 +30,19 @@ namespace PortalCidadao.Infra.Data.Repositories
             return await _dbConnection.QueryAsync<DashboardCategoria>(sql);
         }
 
+        public async Task<IEnumerable<DashboardBairros>> ObterDashboardBairros()
+        {
+            const string sql = @"
+                        SELECT 
+                        P.Bairro AS Bairro, COUNT(P.Id) AS QtdPostagens
+                        FROM 
+                        Postagem P
+                        WHERE P.Excluida = 0
+                        GROUP BY P.Bairro;";
+
+            return await _dbConnection.QueryAsync<DashboardBairros>(sql);
+        }
+
         public async Task<int> TotalPostagens()
         {
             const string sql = @"
