@@ -1,0 +1,2 @@
+ALTER TABLE Postagem
+ADD COLUMN DataResolucao DATETIME;

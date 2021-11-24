@@ -25,5 +25,10 @@ namespace PortalCidadao.Api.Controllers
         {
             return Ok(await _service.ObterDashboardBairros());
         }
+        [HttpGet("atrasados/{mes}")]
+        public async Task<IActionResult> Atrasados([FromRoute]string mes)
+        {
+            return Ok(await _service.ObterDashboardAtrasados(mes));
+        }
     }
 }

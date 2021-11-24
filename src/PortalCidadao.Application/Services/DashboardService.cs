@@ -39,5 +39,12 @@ namespace PortalCidadao.Application.Services
 
             return new BaseModel<IEnumerable<DashboardBairrosModel>>(sucesso: true, EMensagens.RealizadaComSucesso, dados);
         }
+        public async Task<BaseModel<IEnumerable<DashboardAtrasadosModel>>> ObterDashboardAtrasados(string mes)
+        {
+            var dashboardAtrasados = await _dashboardRepository.ObterDashboardAtrasados(mes);
+            var dados = _mapper.Map<IEnumerable<DashboardAtrasadosModel>>(dashboardAtrasados);
+
+            return new BaseModel<IEnumerable<DashboardAtrasadosModel>>(sucesso: true, EMensagens.RealizadaComSucesso, dados);
+        }
     }
 }

@@ -17,6 +17,7 @@ namespace PortalCidadao.Domain.Models
 		public float Longitude { get; set; }
 		public string Bairro { get; set; }
 		public DateTime DataCadastro { get; set; }
+		public DateTime DataResolucao { get; set; }
 		public bool Resolvido { get; set; }
         public int UsuarioId { get; set; }
 		public Usuario Usuario { get; set; }
