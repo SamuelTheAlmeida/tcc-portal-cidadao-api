@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
+using Microsoft.AspNetCore.HttpOverrides;
 using PortalCidadao.Application.Model;
 using PortalCidadao.CrossCutting;
 using PortalCidadao.Api.Middlewares;
@@ -71,6 +72,11 @@ namespace PortalCidadao.Api
             }
 
             app.UseRouting();
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+
             app.UseAuthentication();
             app.UseAuthorization();
 
