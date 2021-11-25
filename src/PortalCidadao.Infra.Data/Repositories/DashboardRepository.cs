@@ -55,7 +55,7 @@ namespace PortalCidadao.Infra.Data.Repositories
                     AND DATEDIFF(P.DataResolucao, P.DataCadastro) > 15                   
                    ";
 
-            return await _dbConnection.QueryAsync<DashboardAtrasados>(sql);
+            return await _dbConnection.QueryAsync<DashboardAtrasados>(sql, new {mesParam});
         }
 
         public async Task<IEnumerable<DashboardBairros>> ObterDashboardBairros()
