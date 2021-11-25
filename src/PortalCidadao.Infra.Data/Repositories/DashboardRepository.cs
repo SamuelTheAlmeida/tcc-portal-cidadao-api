@@ -29,7 +29,7 @@ namespace PortalCidadao.Infra.Data.Repositories
 
             return await _dbConnection.QueryAsync<DashboardCategoria>(sql);
         }
-         public async Task<IEnumerable<DashboardAtrasados>> ObterDashboardAtrasados(string mes)
+         public async Task<DashboardAtrasados> ObterDashboardAtrasados(string mes)
         {
             var mesParam = string.IsNullOrEmpty(mes) ? default : mes;
             const string sql = @"
@@ -51,12 +51,23 @@ namespace PortalCidadao.Infra.Data.Repositories
                     FROM Postagem P                     
                     WHERE           
                     MONTH(P.DataCadastro) = IFNULL(@mesParam, MONTH(P.DataCadastro))
-                    AND P.Resolvido = 1
-                    AND DATEDIFF(P.DataResolucao, P.DataCadastro) > 15                   
+                    AND (DATEDIFF(P.DataResolucao, P.DataCadastro) <= -15 OR DATEDIFF(P.DataCadastro, NOW()) <= -15)                   
                    ";
 
-            return await _dbConnection.QueryAsync<DashboardAtrasados>(sql, new {mesParam});
+            return await _dbConnection.QueryFirstAsync<DashboardAtrasados>(sql, new {mesParam});
         }
+
+         public async Task<int> ObterTotalAtrasados()
+         {
+             const string sql = @"
+                    SELECT COUNT(P.Id) AS QtdPostagens
+                    FROM Postagem P                     
+                    WHERE           
+                    DATEDIFF(P.DataResolucao, P.DataCadastro) <= -15 OR DATEDIFF(P.DataCadastro, NOW()) <= -15              
+                   ";
+
+             return await _dbConnection.QueryFirstAsync<int>(sql);
+         }
 
         public async Task<IEnumerable<DashboardBairros>> ObterDashboardBairros()
         {

@@ -8,7 +8,7 @@ namespace PortalCidadao.Application.Services.Interfaces
     {
         Task<BaseModel<IEnumerable<DashboardCategoriasModel>>> ObterDashboardCategorias();
         Task<BaseModel<IEnumerable<DashboardBairrosModel>>> ObterDashboardBairros();
-        Task<BaseModel<IEnumerable<DashboardAtrasadosModel>>> ObterDashboardAtrasados(string mes);
+        Task<BaseModel<DashboardAtrasadosModel>> ObterDashboardAtrasados(int mesInicio, int mesFim);
 
     }
 }
