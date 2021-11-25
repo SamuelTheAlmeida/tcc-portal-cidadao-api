@@ -51,7 +51,7 @@ namespace PortalCidadao.Infra.Data.Repositories
                     FROM Postagem P                     
                     WHERE           
                     MONTH(P.DataCadastro) = IFNULL(@mesParam, MONTH(P.DataCadastro))
-                    AND (DATEDIFF(P.DataResolucao, P.DataCadastro) <= -15 OR DATEDIFF(P.DataCadastro, NOW()) <= -15)                   
+                    AND (DATEDIFF(P.DataResolucao, P.DataCadastro) <= -15 OR (DATEDIFF(P.DataCadastro, NOW()) <= -15 AND P.Resolvido = 0))                   
                    ";
 
             return await _dbConnection.QueryFirstAsync<DashboardAtrasados>(sql, new {mesParam});
