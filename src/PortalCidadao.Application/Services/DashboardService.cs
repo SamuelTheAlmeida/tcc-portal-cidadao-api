@@ -1,4 +1,5 @@
-﻿using PortalCidadao.Application.Model;
+﻿using System;
+using PortalCidadao.Application.Model;
 using PortalCidadao.Application.Repositories;
 using PortalCidadao.Application.Services.Interfaces;
 using PortalCidadao.Domain.Enums;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using PortalCidadao.Domain.Models;
 
 namespace PortalCidadao.Application.Services
 {
@@ -38,6 +40,31 @@ namespace PortalCidadao.Application.Services
             var dados = _mapper.Map<IEnumerable<DashboardBairrosModel>>(dashboardBairros);
 
             return new BaseModel<IEnumerable<DashboardBairrosModel>>(sucesso: true, EMensagens.RealizadaComSucesso, dados);
+        }
+        public async Task<BaseModel<DashboardAtrasadosModel>> ObterDashboardAtrasados(int mesInicio, int mesFim)
+        {
+            var dashboardAtrasados = new List<DashboardAtrasados>();
+            var data = new DateTime(DateTime.MinValue.Month, mesInicio, DateTime.MinValue.Day);
+
+            var mes = data.Month;
+            while (mes != mesFim)
+            {
+                dashboardAtrasados.Add(await _dashboardRepository.ObterDashboardAtrasados(mes.ToString()));
+                data = data.AddMonths(1);
+                mes = data.Month;
+            }
+
+            var itens = _mapper.Map<IEnumerable<DashboardAtrasadosItem>>(dashboardAtrasados);
+            var total = await _dashboardRepository.ObterTotalAtrasados();
+
+            var dados = new DashboardAtrasadosModel
+            {
+                Itens = itens,
+                TotalAtrasados = total
+            };
+
+            var baseModelResult = new BaseModel<DashboardAtrasadosModel>(sucesso: true, EMensagens.RealizadaComSucesso, dados);
+            return baseModelResult;
         }
     }
 }

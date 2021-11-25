@@ -78,7 +78,8 @@ namespace PortalCidadao.Infra.Data.Repositories
         {
             const string sql = @"
                     UPDATE Postagem P                    
-                    SET P.Resolvido = @resolvido
+                    SET P.Resolvido = @resolvido,
+                    P.DataResolucao = NOW()
                     WHERE P.Id = @id";                  
                     
                  var resultado = await _dbConnection.QueryAsync(sql, new { id, resolvido });            
