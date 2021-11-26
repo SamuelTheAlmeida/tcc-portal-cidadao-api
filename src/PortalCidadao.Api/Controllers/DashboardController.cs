@@ -25,10 +25,11 @@ namespace PortalCidadao.Api.Controllers
         {
             return Ok(await _service.ObterDashboardBairros());
         }
-        [HttpGet("atrasados/{mes}")]
-        public async Task<IActionResult> Atrasados([FromRoute]string mes)
+        [HttpGet("atrasados")]
+        public async Task<IActionResult> Atrasados([FromQuery] int mesInicio, [FromQuery] int mesFim)
         {
-            return Ok(await _service.ObterDashboardAtrasados(mes));
+            var result = await _service.ObterDashboardAtrasados(mesInicio, mesFim);
+            return Ok(result);
         }
         [HttpGet("abertos/{mes}")]
         public async Task<IActionResult> Abertos([FromRoute]string mes)
