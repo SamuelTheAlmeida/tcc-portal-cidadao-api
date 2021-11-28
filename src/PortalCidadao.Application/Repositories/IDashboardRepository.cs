@@ -10,7 +10,10 @@ namespace PortalCidadao.Application.Repositories
         Task<IEnumerable<DashboardBairros>> ObterDashboardBairros();
         Task<int> TotalPostagens();
         Task<DashboardAtrasados> ObterDashboardAtrasados(string mes);
+        Task<DashboardAbertos> ObterDashboardAbertos(string mes);
+        
         Task<int> ObterTotalAtrasados();
+        Task<int> ObterTotalAbertos();
 
     }
 }
