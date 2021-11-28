@@ -66,12 +66,32 @@ namespace PortalCidadao.Application.Services
             var baseModelResult = new BaseModel<DashboardAtrasadosModel>(sucesso: true, EMensagens.RealizadaComSucesso, dados);
             return baseModelResult;
         }
-        public async Task<BaseModel<IEnumerable<DashboardAbertosModel>>> ObterDashboardAbertos(string mes)
+         public async Task<BaseModel<DashboardAbertosModel>> ObterDashboardAbertos(int mesInicio, int mesFim)
         {
-            var dashboardAbertos = await _dashboardRepository.ObterDashboardAbertos(mes);
-            var dados = _mapper.Map<IEnumerable<DashboardAbertosModel>>(dashboardAbertos);
+            var dashboardAbertos = new List<DashboardAbertos>();
+            var data = new DateTime(DateTime.MinValue.Month, mesInicio, DateTime.MinValue.Day);
 
-            return new BaseModel<IEnumerable<DashboardAbertosModel>>(sucesso: true, EMensagens.RealizadaComSucesso, dados);
+            var mes = data.Month;
+            while (mes != mesFim)
+            {
+                dashboardAbertos.Add(await _dashboardRepository.ObterDashboardAbertos(mes.ToString()));
+                data = data.AddMonths(1);
+                mes = data.Month;
+            }
+
+            var itens = _mapper.Map<IEnumerable<DashboardAbertosItem>>(dashboardAbertos);
+            var total = await _dashboardRepository.ObterTotalAbertos();
+
+            var dados = new DashboardAbertosModel
+            {
+                Itens = itens,
+                TotalAbertos = total
+            };
+
+            var baseModelResult = new BaseModel<DashboardAbertosModel>(sucesso: true, EMensagens.RealizadaComSucesso, dados);
+            return baseModelResult;
         }
+       
+        
     }
 }

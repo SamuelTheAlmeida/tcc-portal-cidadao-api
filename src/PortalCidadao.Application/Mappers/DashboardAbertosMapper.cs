@@ -10,11 +10,11 @@ namespace PortalCidadao.Application.Mappers
         {
             CreateMap<DashboardAbertos, DashboardAbertosModel>().ReverseMap();
             
-            CreateMap<DashboardAbertos, DashboardAbertosModel>()
+            CreateMap<DashboardAbertos, DashboardAbertosItem>()
                 .ForMember(p => p.Mes, p => p.MapFrom(x => x.Mes))
                 .ForMember(p => p.QtdPostagens, p => p.MapFrom(x => x.QtdPostagens));
 
-                CreateMap<DashboardAbertosModel, DashboardAbertos>()
+                CreateMap<DashboardAbertosItem, DashboardAbertos>()
                 .ForMember(p => p.Mes, p => p.MapFrom(x => x.Mes))
                 .ForMember(p => p.QtdPostagens, p => p.MapFrom(x => x.QtdPostagens));
 
