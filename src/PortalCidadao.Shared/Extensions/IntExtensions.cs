@@ -11,5 +11,11 @@ namespace PortalCidadao.Shared.Extensions
 
             return (T)Enum.ToObject(typeof(T), n);
         }
+
+        public static string ConverterHora(this int hora)
+        {
+            var horaFormatada = hora.ToString().PadLeft(2, '0');
+            return $"{horaFormatada}:00-{horaFormatada}:59";
+        }
     }
 }

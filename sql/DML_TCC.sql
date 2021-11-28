@@ -32,6 +32,7 @@ VALUES
 ('Meio ambiente', '', 5),
 ('Eventos', '', 1),
 ('Vandalismo', '', 6) ,
+('Segurança', '', 6) ,
 ('Pessoa em situação de rua', '', 7),
 ('Zoonoses', '', 8);
 

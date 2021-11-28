@@ -74,7 +74,7 @@ namespace PortalCidadao.Infra.Data.Repositories
                 return p;
             }, new { categoria });
         }
- public async Task<Postagem> resolverPostagem(int id, bool resolvido)
+        public async Task<Postagem> resolverPostagem(int id, bool resolvido)
         {
             const string sql = @"
                     UPDATE Postagem P                    

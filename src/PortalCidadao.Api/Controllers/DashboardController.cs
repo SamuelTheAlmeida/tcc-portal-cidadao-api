@@ -36,6 +36,13 @@ namespace PortalCidadao.Api.Controllers
         {
             var result = await _service.ObterDashboardAbertos(mesInicio, mesFim);
             return Ok(result);     
-       }
+        }
+
+        [HttpGet("seguranca")]
+        public async Task<IActionResult> Segurança()
+        {
+            var result = await _service.ObterDashboardSeguranca();
+            return Ok(result);
+        }
     }
 }

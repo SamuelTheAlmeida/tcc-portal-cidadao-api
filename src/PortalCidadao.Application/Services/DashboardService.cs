@@ -8,16 +8,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using PortalCidadao.Domain.Models;
+using PortalCidadao.Shared.Extensions;
 
 namespace PortalCidadao.Application.Services
 {
     public class DashboardService : IDashboardService
     {
         private readonly IDashboardRepository _dashboardRepository;
+        private readonly IPostagemRepository _postagemRepository;
         private readonly IMapper _mapper;
-        public DashboardService(IDashboardRepository dashboardRepository, IMapper mapper)
+        public DashboardService(IDashboardRepository dashboardRepository, 
+            IPostagemRepository postagemRepository, 
+            IMapper mapper)
         {
             _dashboardRepository = dashboardRepository;
+            _postagemRepository = postagemRepository;
             _mapper = mapper;
         }
 
@@ -66,7 +71,8 @@ namespace PortalCidadao.Application.Services
             var baseModelResult = new BaseModel<DashboardAtrasadosModel>(sucesso: true, EMensagens.RealizadaComSucesso, dados);
             return baseModelResult;
         }
-         public async Task<BaseModel<DashboardAbertosModel>> ObterDashboardAbertos(int mesInicio, int mesFim)
+
+        public async Task<BaseModel<DashboardAbertosModel>> ObterDashboardAbertos(int mesInicio, int mesFim)
         {
             var dashboardAbertos = new List<DashboardAbertos>();
             var data = new DateTime(DateTime.MinValue.Month, mesInicio, DateTime.MinValue.Day);
@@ -91,7 +97,33 @@ namespace PortalCidadao.Application.Services
             var baseModelResult = new BaseModel<DashboardAbertosModel>(sucesso: true, EMensagens.RealizadaComSucesso, dados);
             return baseModelResult;
         }
-       
-        
+
+         public async Task<BaseModel<DashboardSegurancaModel>> ObterDashboardSeguranca()
+         {
+             const string categoria = "Segurança";
+             var categorias = await _postagemRepository.ListarCategorias();
+             var categoriaSeguranca = categorias.FirstOrDefault(x => x.Nome == categoria);
+             if (categoriaSeguranca == null)
+                 return new BaseModel<DashboardSegurancaModel>(false, EMensagens.CategoriaSegurancaNaoCadastrada);
+
+             var postagensSeguranca = await _postagemRepository.ListarPorCategoria(categoria);
+             var group = postagensSeguranca.GroupBy(x => x.DataCadastro.AddHours(-3).Hour)
+                 .Select(x => new DashboardSegurancaItem
+             {
+                 Horario = x.Key.ConverterHora(),
+                 Quantidade = x.Count()
+             })
+                 .OrderByDescending(x => x.Quantidade)
+                 .Take(5);
+
+             return new BaseModel<DashboardSegurancaModel>(true, EMensagens.RealizadaComSucesso,
+                 new DashboardSegurancaModel
+                 {
+                     DashboardSeguranca = group
+                 });
+         }
+
+
+
     }
 }

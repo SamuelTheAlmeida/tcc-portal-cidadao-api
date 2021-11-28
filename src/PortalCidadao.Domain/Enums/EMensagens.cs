@@ -19,6 +19,9 @@ namespace PortalCidadao.Domain.Enums
         [Description("Email já cadastrado no sistema.")]
         EmailaCadastrado = 4,
 
+        [Description("Categoria Segurança não cadastrada")]
+        CategoriaSegurancaNaoCadastrada = 5,
+
         [Description("Ocorreu um erro não identificado na aplicação. Tente novamente mais tarde ou entre em contato com o suporte técnico")]
         ErroInterno = 99,
     }
