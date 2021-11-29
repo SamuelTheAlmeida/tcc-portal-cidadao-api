@@ -36,6 +36,7 @@ namespace PortalCidadao.CrossCutting
             services.AddScoped<ICurtidaService, CurtidaService>();
             services.AddScoped<IComentarioService, ComentarioService>();
             services.AddScoped<IDashboardService, DashboardService>();
+            services.AddScoped<IPontuacaoService, PontuacaoService>();
             #endregion
 
             #region Validators

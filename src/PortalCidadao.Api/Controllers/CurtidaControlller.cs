@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PortalCidadao.Application.Model;
 using PortalCidadao.Domain.Models;
 using PortalCidadao.Application.Services.Interfaces;
 using System.Threading.Tasks;
@@ -15,31 +14,21 @@ namespace PortalCidadao.Api.Controllers
         {
             _service = service;
         }
-        
 
-            [HttpPost]
+        [HttpPost]
         public async Task<IActionResult> Inserir(Curtida model) =>
             Ok(await _service.Inserir(model));
 
-             [HttpPut("{id}/{Acao}")]
-        public async Task<IActionResult> atualizarCurtida(int id, bool Acao) =>
-            Ok(await _service.atualizarCurtida(id, Acao));
+        [HttpPut("{id:int}/{acao:bool}")]
+        public async Task<IActionResult> AtualizarCurtida(int id, bool acao) =>
+            Ok(await _service.AtualizarCurtida(id, acao));
 
-             [HttpDelete("{id}")]
-        public async Task<IActionResult> removerCurtida(int id) =>
-            Ok(await _service.removerCurtida(id));
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> RemoverCurtida(int id) =>
+            Ok(await _service.RemoverCurtida(id));
 
-        [HttpGet("{postagemId}/{usuarioId}")]
-        public async Task<IActionResult> obterCurtida(int postagemId, int usuarioId) =>
-            Ok(await _service.obterCurtida(postagemId, usuarioId));
-        
-       
-
-        //[HttpGet]
-        //public async Task<IActionResult> ListarOrgaos()
-        //{
-        //    return Ok(await _service.ListarOrgaos());
-        //}
-
+        [HttpGet("{postagemId:int}/{usuarioId:int}")]
+        public async Task<IActionResult> ObterCurtida(int postagemId, int usuarioId) =>
+            Ok(await _service.ObterCurtida(postagemId, usuarioId));
     }
 }

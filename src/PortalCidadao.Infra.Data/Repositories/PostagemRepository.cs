@@ -6,8 +6,6 @@ using PortalCidadao.Api.Domain.Models;
 using PortalCidadao.Application.Repositories;
 using System.Threading.Tasks;
 using System.Linq;
-using System.Diagnostics;
-
 
 namespace PortalCidadao.Infra.Data.Repositories
 {
@@ -74,6 +72,18 @@ namespace PortalCidadao.Infra.Data.Repositories
                 return p;
             }, new { categoria });
         }
+
+        public async Task<int> TotalPorUsuario(int usuarioId)
+        {
+            const string sql = @"
+                    SELECT COUNT(*) 
+                    FROM Postagem P 
+                    WHERE P.UsuarioId = @usuarioId
+                    AND P.Excluida = 0";
+
+            return await _dbConnection.QueryFirstAsync<int>(sql, new { usuarioId });
+        }
+
         public async Task<Postagem> resolverPostagem(int id, bool resolvido)
         {
             const string sql = @"
@@ -113,9 +123,6 @@ namespace PortalCidadao.Infra.Data.Repositories
                 var resultado = await _dbConnection.QueryAsync(sql, new {id, excluir});            
 
             return resultado.FirstOrDefault();           
-
-                            
-
         }
 
         public async Task<Postagem> ObterDetalhado(int id)
@@ -172,8 +179,8 @@ namespace PortalCidadao.Infra.Data.Repositories
         public async Task Inserir(Postagem postagem)
         {
             const string sql = @"INSERT INTO Postagem 
-                        (CategoriaId, Subcategoria, Titulo, Descricao, ImagemUrl, Latitude, Longitude, Bairro, UsuarioId, DataCadastro, Resolvido, Excluida)
-                    VALUES(@CategoriaId, @Subcategoria, @Titulo, @Descricao, @ImagemUrl, @Latitude, @Longitude, @Bairro, @UsuarioId, NOW(), @Resolvido, 0); ";
+                        (CategoriaId, Subcategoria, Titulo, Descricao, ImagemUrl, Latitude, Longitude, Bairro, UsuarioId, DataCadastro, Resolvido, Excluida, Confiabilidade)
+                    VALUES(@CategoriaId, @Subcategoria, @Titulo, @Descricao, @ImagemUrl, @Latitude, @Longitude, @Bairro, @UsuarioId, NOW(), @Resolvido, 0, @Confiabilidade); ";
 
             await _dbConnection.QueryAsync(sql, postagem);
         }

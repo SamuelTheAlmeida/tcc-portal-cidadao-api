@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using PortalCidadao.Application.Model;
 using PortalCidadao.Application.Repositories;
 using PortalCidadao.Application.Services.Interfaces;
 using PortalCidadao.Domain.Enums;
 using PortalCidadao.Domain.Models;
-using Microsoft.AspNetCore.Http;
 
 namespace PortalCidadao.Application.Services
 {
@@ -16,35 +12,50 @@ namespace PortalCidadao.Application.Services
     {
         private readonly IMapper _mapper;
         private readonly ICurtidaRepository _repository;
+        private readonly IPontuacaoService _pontuacaoService;
 
-        public CurtidaService(ICurtidaRepository repository, IMapper mapper)
+        public CurtidaService(ICurtidaRepository repository, 
+            IPontuacaoService pontuacaoService, 
+            IMapper mapper)
         {
             _repository = repository;
+            _pontuacaoService = pontuacaoService;
             _mapper = mapper;
         }        
 
-     
-        public async Task<BaseModel<CurtidaModel>> atualizarCurtida(int curtidaId, bool Acao) =>
-          new(true, EMensagens.RealizadaComSucesso, _mapper.Map<CurtidaModel>(await _repository.atualizarCurtida(curtidaId,Acao)));
+        public async Task<BaseModel<CurtidaModel>> AtualizarCurtida(int curtidaId, bool acao) => 
+            new(true, EMensagens.RealizadaComSucesso, _mapper.Map<CurtidaModel>(await _repository.AtualizarCurtida(curtidaId,acao)));
 
-          public async Task<BaseModel<CurtidaModel>> removerCurtida(int id) =>
-          new(true, EMensagens.RealizadaComSucesso, _mapper.Map<CurtidaModel>(await _repository.removerCurtida(id)));
+        public async Task<BaseModel<CurtidaModel>> RemoverCurtida(int id) => 
+            new(true, EMensagens.RealizadaComSucesso, _mapper.Map<CurtidaModel>(await _repository.RemoverCurtida(id)));
 
-        public async Task<BaseModel<CurtidaModel>> obterCurtida(int postagemId, int usuarioId) =>
-         new(true, EMensagens.RealizadaComSucesso, _mapper.Map<CurtidaModel>(await _repository.obterCurtida(postagemId, usuarioId)));
+        public async Task<BaseModel<CurtidaModel>> ObterCurtida(int postagemId, int usuarioId) => 
+            new(true, EMensagens.RealizadaComSucesso, _mapper.Map<CurtidaModel>(await _repository.ObterCurtida(postagemId, usuarioId)));
 
-        public async Task<BaseModel> Inserir(Curtida curtida)
-        {            
-            await _repository.Inserir(_mapper.Map<Curtida>(curtida));
-            return new(true, EMensagens.RealizadaComSucesso);
+        public async Task<BaseModel> Inserir(Curtida curtidaModel)
+        {
+            var curtida = _mapper.Map<Curtida>(curtidaModel);
+            curtida.Pontos = await CalcularPontos(curtidaModel.UsuarioId);
+
+            await _repository.Inserir(curtida);
+            return new BaseModel(true, EMensagens.RealizadaComSucesso);
         }
 
+        private async Task<float> CalcularPontos(int usuarioId)
+        {
+            var pontos = await _pontuacaoService.CalcularPontos(usuarioId);
+            return ConverterPontosCurtida(pontos);
+        }
 
-
-
-        //public async Task<BaseModel<IEnumerable<OrgaoModel>>> ListarOrgaos() =>
-        //    new(true, EMensagens.RealizadaComSucesso, _mapper.Map<IEnumerable<OrgaoModel>>(
-        //        await _repository.ListarOrgaos()));
+        private static float ConverterPontosCurtida(float pontos)
+        {
+            return pontos switch
+            {
+                > 20 => 1.00f,
+                > 10 => 0.50f,
+                _ => 0.25f
+            };
+        }
     }
 }
 

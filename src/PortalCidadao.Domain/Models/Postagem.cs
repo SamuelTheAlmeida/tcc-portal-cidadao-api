@@ -24,6 +24,7 @@ namespace PortalCidadao.Domain.Models
 		public long Curtidas { get; set; }
 		public long Descurtidas { get; set; }
 		public bool Excluida {get; set;}
+		public string Confiabilidade { get; set; }
     }
 }
 

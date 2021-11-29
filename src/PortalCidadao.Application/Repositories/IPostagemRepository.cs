@@ -19,6 +19,7 @@ namespace PortalCidadao.Application.Repositories
         Task<Postagem> ObterDetalhado(int id);
         Task<Postagem> resolverPostagem(int id, bool resolvido);
         Task<IEnumerable<Postagem>> ListarPorCategoria(string categoria);
+        Task<int> TotalPorUsuario(int usuarioId);
 
     }
 }

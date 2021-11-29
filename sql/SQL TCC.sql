@@ -46,6 +46,7 @@ CREATE TABLE Postagem
 	Excluida tinyint DEFAULT 0,
 	TokenRedefinicaoSenha char(36),
 	DataResolucao DATETIME,
+	Confiabilidade VARCHAR(10),
 	FOREIGN KEY (UsuarioId) REFERENCES Usuario (Id),
 	FOREIGN KEY (CategoriaId) REFERENCES Categoria (Id)
 )

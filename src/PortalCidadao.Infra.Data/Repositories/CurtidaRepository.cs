@@ -1,8 +1,7 @@
-﻿using Dapper;
+﻿using System.Collections.Generic;
+using Dapper;
 using PortalCidadao.Domain.Models;
-using System.Collections.Generic;
 using System.Data;
-using PortalCidadao.Api.Domain.Models;
 using PortalCidadao.Application.Repositories;
 using System.Threading.Tasks;
 using System.Linq;
@@ -17,20 +16,17 @@ namespace PortalCidadao.Infra.Data.Repositories
         {
             _dbConnection = dbConnection;
         }
-
         
         public async Task Inserir(Curtida curtida)
         {
-            var sql = @"INSERT INTO Curtida 
+            const string sql = @"INSERT INTO Curtida 
                         (PostagemId, UsuarioId, Acao, Pontos)
                     VALUES(@PostagemId, @UsuarioId, @Acao, @Pontos); ";
 
             await _dbConnection.QueryAsync(sql, curtida);
-
         }
 
-
-        public async Task<Curtida> obterCurtida(int postagemId, int usuarioId)
+        public async Task<Curtida> ObterCurtida(int postagemId, int usuarioId)
         {
             const string sql = @"
                     SELECT C.* 
@@ -43,7 +39,21 @@ namespace PortalCidadao.Infra.Data.Repositories
             return resultado.FirstOrDefault();
         }
 
-         public async Task<Curtida> removerCurtida(int curtidaId)
+        public async Task<IEnumerable<Curtida>> ObterCurtidasPorUsuario(int usuarioId)
+        {
+            const string sql = @"
+                    SELECT C.* 
+                    FROM Curtida C
+                    INNER JOIN Postagem P
+                    ON P.Id = C.PostagemId
+                    WHERE P.UsuarioId = @usuarioId";
+
+            var resultado = await _dbConnection.QueryAsync<Curtida>(sql, new { usuarioId });
+
+            return resultado;
+        }
+
+        public async Task<Curtida> RemoverCurtida(int curtidaId)
         {
             const string sql = @"
                     DELETE C 
@@ -53,13 +63,9 @@ namespace PortalCidadao.Infra.Data.Repositories
                 var resultado = await _dbConnection.QueryAsync(sql, new {curtidaId});            
 
             return resultado.FirstOrDefault();           
-
-                            
-
         }
-       
-        
-         public async Task<Curtida> atualizarCurtida(int curtidaId, bool Acao)
+
+        public async Task<Curtida> AtualizarCurtida(int curtidaId, bool Acao)
         {
             const string sql = @"
                     UPDATE Curtida C                    

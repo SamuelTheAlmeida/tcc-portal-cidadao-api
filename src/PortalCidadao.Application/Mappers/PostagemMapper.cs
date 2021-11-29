@@ -10,10 +10,6 @@ namespace PortalCidadao.Application.Mappers
     {
         public PostagemMapper()
         {
-            //CreateMap<Postagem, PostagemModel>().ReverseMap();
-
-            //.ForMember(p => p.Perfil, p => p.MapFrom(x => new EnumModel(x.Perfil)))
-
             CreateMap<Postagem, PostagemModel>()
                 .ForMember(p => p.Id, p => p.MapFrom(x => x.Id))
                 .ForMember(p => p.Subcategoria, p => p.MapFrom(x => new EnumModel(x.Subcategoria)))
@@ -30,7 +26,8 @@ namespace PortalCidadao.Application.Mappers
                 .ForMember(p => p.UsuarioId, p => p.MapFrom(x => x.UsuarioId))
                 .ForMember(p => p.Usuario, p => p.MapFrom(x => x.Usuario))
                 .ForMember(p => p.Curtidas, p => p.MapFrom(x => x.Curtidas))
-                .ForMember(p => p.Descurtidas, p => p.MapFrom(x => x.Descurtidas));
+                .ForMember(p => p.Descurtidas, p => p.MapFrom(x => x.Descurtidas))
+                .ForMember(p => p.Confiabilidade, p => p.MapFrom(x => x.Confiabilidade));
 
             CreateMap<PostagemModel, Postagem>()
                 .ForMember(p => p.Id, p => p.MapFrom(x => x.Id))
@@ -47,7 +44,8 @@ namespace PortalCidadao.Application.Mappers
                 .ForMember(p => p.Resolvido, p => p.MapFrom(x => x.Resolvido))
                 .ForMember(p => p.UsuarioId, p => p.MapFrom(x => x.UsuarioId))
                 .ForMember(p => p.Curtidas, p => p.MapFrom(x => x.Curtidas))
-                .ForMember(p => p.Descurtidas, p => p.MapFrom(x => x.Descurtidas));
+                .ForMember(p => p.Descurtidas, p => p.MapFrom(x => x.Descurtidas))
+                .ForMember(p => p.Confiabilidade, p => p.MapFrom(x => x.Confiabilidade));
         }
     }
 }
