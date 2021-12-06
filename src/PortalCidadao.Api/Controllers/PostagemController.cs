@@ -18,8 +18,8 @@ namespace PortalCidadao.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ListarTodos(string bairro, int categoriaId, int subcategoriaId) =>
-             Ok(await _service.ListarTodos(bairro, categoriaId, subcategoriaId));
+        public async Task<IActionResult> ListarTodos(string bairro, int categoriaId, int subcategoriaId, string confiabilidade) =>
+             Ok(await _service.ListarTodos(bairro, categoriaId, subcategoriaId, confiabilidade));
 
         [HttpGet("mes/{mes}")]
         public async Task<IActionResult> PostagensAbertasPorMes(string mes) =>
@@ -62,6 +62,10 @@ namespace PortalCidadao.Api.Controllers
         [HttpGet("bairros")]
         public async Task<IActionResult> ListarBairros() =>
             Ok(await _service.ListarBairros());
+
+        [HttpGet("confiabilidades")]
+        public async Task<IActionResult> ListarConfiabilidades() =>
+            Ok(await _service.ListarConfiabilidades());
 
         //[HttpGet]
         //public async Task<IActionResult> ListarOrgaos()

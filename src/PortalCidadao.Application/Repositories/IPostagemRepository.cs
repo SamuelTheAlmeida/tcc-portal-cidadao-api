@@ -7,7 +7,7 @@ namespace PortalCidadao.Application.Repositories
 {
     public interface IPostagemRepository
     {
-        Task<IEnumerable<Postagem>> ListarTodos(string bairro, int categoriaId, int subcategoriaId);
+        Task<IEnumerable<Postagem>> ListarTodos(string bairro, int categoriaId, int subcategoriaId, string confiabilidade);
         Task<Postagem> ObterPorId(int id);
         Task<IEnumerable<Postagem>> PostagensAbertasPorMes(string mes);
 
@@ -15,6 +15,8 @@ namespace PortalCidadao.Application.Repositories
         Task<Postagem> removerPostagem(int id, bool excluir);
 
         Task<IEnumerable<string>> ListarBairros();
+        Task<IEnumerable<string>> ListarConfiabilidades();
+
         Task Inserir(Postagem postagem);
         Task<Postagem> ObterDetalhado(int id);
         Task<Postagem> resolverPostagem(int id, bool resolvido);
