@@ -33,9 +33,9 @@ namespace PortalCidadao.Application.Services
         public async Task<BaseModel<PostagemModel>> resolverPostagem(int id, bool resolvido) => 
             new(true, EMensagens.RealizadaComSucesso, _mapper.Map<PostagemModel>(await _repository.resolverPostagem(id,resolvido)));
 
-        public async Task<BaseModel<IEnumerable<PostagemModel>>> ListarTodos(string bairro, int categoriaId, int subCategoriaId) => 
+        public async Task<BaseModel<IEnumerable<PostagemModel>>> ListarTodos(string bairro, int categoriaId, int subCategoriaId, string confiabilidade) => 
             new(true, EMensagens.RealizadaComSucesso, _mapper.Map<IEnumerable<PostagemModel>>(
-                await _repository.ListarTodos(bairro, categoriaId, subCategoriaId)));
+                await _repository.ListarTodos(bairro, categoriaId, subCategoriaId, confiabilidade)));
 
         public async Task<BaseModel<IEnumerable<PostagemModel>>> PostagensAbertasPorMes(string mes) =>
             new(true, EMensagens.RealizadaComSucesso, _mapper.Map<IEnumerable<PostagemModel>>(
@@ -62,6 +62,8 @@ namespace PortalCidadao.Application.Services
 
         public async Task<BaseModel<IEnumerable<string>>> ListarBairros() => 
             new(true, EMensagens.RealizadaComSucesso, await _repository.ListarBairros());
+             public async Task<BaseModel<IEnumerable<string>>> ListarConfiabilidades() => 
+            new(true, EMensagens.RealizadaComSucesso, await _repository.ListarConfiabilidades());
 
          public async Task<BaseModel<PostagemModel>> removerPostagem(int id, bool excluir) => 
              new(true, EMensagens.RealizadaComSucesso, _mapper.Map<PostagemModel>(await _repository.removerPostagem(id, excluir)));

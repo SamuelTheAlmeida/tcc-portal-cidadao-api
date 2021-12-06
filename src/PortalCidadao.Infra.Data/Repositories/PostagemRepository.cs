@@ -18,11 +18,12 @@ namespace PortalCidadao.Infra.Data.Repositories
             _dbConnection = dbConnection;
         }
 
-        public async Task<IEnumerable<Postagem>> ListarTodos(string bairro, int categoriaId, int subcategoriaId)
+        public async Task<IEnumerable<Postagem>> ListarTodos(string bairro, int categoriaId, int subcategoriaId, string confiabilidade)
         {
             var bairroParam = string.IsNullOrEmpty(bairro) ? default : bairro;
             var categoriaIdParam = categoriaId > 0 ? (int?)categoriaId : null;
             var subCategoriaIdParam = subcategoriaId > 0 ? (int?)subcategoriaId : null;
+            var confiabilidadeParam = string.IsNullOrEmpty(confiabilidade) ? default : confiabilidade;
            
             const string sql = @"
                     SELECT P.*, C.* 
@@ -30,6 +31,7 @@ namespace PortalCidadao.Infra.Data.Repositories
                     INNER JOIN Categoria C
                     ON C.Id = P.CategoriaId
                     WHERE P.Bairro = IFNULL(@bairroParam, P.Bairro) AND 
+                    P.Confiabilidade = IFNULL(@confiabilildadeParam, P.Confiabilidade) AND
                     P.Resolvido = 0 AND
                     P.CategoriaId = IFNULL(@categoriaIdParam, P.CategoriaId) AND
                     P.Subcategoria = IFNULL(@subCategoriaIdParam, P.Subcategoria)                    
@@ -39,7 +41,7 @@ namespace PortalCidadao.Infra.Data.Repositories
             {
                 p.Categoria = c;
                 return p;
-            }, new { bairroParam, categoriaIdParam, subCategoriaIdParam });
+            }, new { bairroParam, categoriaIdParam, subCategoriaIdParam, confiabilidadeParam });
         }
 
          public async Task<IEnumerable<Postagem>> PostagensAbertasPorMes(string mes)
@@ -170,6 +172,15 @@ namespace PortalCidadao.Infra.Data.Repositories
         {
             const string sql = @"
             SELECT DISTINCT P.Bairro 
+            FROM Postagem P 
+            ORDER BY 1";
+
+            return await _dbConnection.QueryAsync<string>(sql);
+        }
+         public async Task<IEnumerable<string>> ListarConfiabilidades()
+        {
+            const string sql = @"
+            SELECT DISTINCT P.Confiabilidade
             FROM Postagem P 
             ORDER BY 1";
 
