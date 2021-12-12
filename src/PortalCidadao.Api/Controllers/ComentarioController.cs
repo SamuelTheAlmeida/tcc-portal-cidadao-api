@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PortalCidadao.Application.Model;
 using PortalCidadao.Domain.Models;
 using PortalCidadao.Application.Services.Interfaces;
 using System.Threading.Tasks;
 
 namespace PortalCidadao.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ComentarioController : ControllerBase
     {

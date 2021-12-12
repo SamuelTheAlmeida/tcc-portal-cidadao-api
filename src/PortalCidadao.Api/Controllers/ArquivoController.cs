@@ -6,7 +6,7 @@ using PortalCidadao.Application.Services.Interfaces;
 
 namespace PortalCidadao.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ArquivoController : ControllerBase
     {

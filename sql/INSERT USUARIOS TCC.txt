@@ -1,5 +1,5 @@
-#senha testeeeeee
+#senha 123456
 INSERT INTO Usuario
 (CPF, Nome, Email, Senha, Perfil, EmailConfirmado, DataCadastro)
 VALUES
-('10472210980', 'Samuel', 'samuel@gmail.com', 'a3faae1bbee471f80d7b3fbdcbb34f9c', 1, 0, NOW());
+('10472210980', 'Cidadao Teste', 'teste@teste.com', 'e10adc3949ba59abbe56e057f20f883e', 1, 0, NOW());

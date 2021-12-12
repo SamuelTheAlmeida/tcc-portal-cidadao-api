@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using System;
 using Microsoft.AspNetCore.HttpOverrides;
 using PortalCidadao.Application.Model;
 using PortalCidadao.CrossCutting;
@@ -55,20 +55,25 @@ namespace PortalCidadao.Api
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UsePathBase(new PathString("/api"));
+
             app.UseCors();
+
+            app.UseSwagger(c =>
+            {
+                c.RouteTemplate = "swagger/{documentName}/swagger.json";
+            });
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "PortalCidadao.Api v1");
+                c.RoutePrefix = "";
+            });
 
 
             if (env.IsDevelopment())
             {
-                // add this middleware as the first one
-                app.Use((context, next) => {
-                    context.Request.PathBase = Environment.GetEnvironmentVariable("ASPNETCORE_APPL_PATH");
-                    return next();
-                });
-
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PortalCidadao.Api v1"));
             }
 
             app.UseRouting();

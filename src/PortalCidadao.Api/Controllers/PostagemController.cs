@@ -7,7 +7,7 @@ using PortalCidadao.Api.Request;
 
 namespace PortalCidadao.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class PostagemController : ControllerBase
     {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PortalCidadao.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class UsuarioController : ControllerBase
     {
