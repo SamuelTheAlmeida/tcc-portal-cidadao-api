@@ -55,10 +55,13 @@ namespace PortalCidadao.Api
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UsePathBase(new PathString("/api"));
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UsePathBase(new PathString("/api"));
+            }
 
             app.UseCors();
-
             app.UseSwagger(c =>
             {
                 c.RouteTemplate = "swagger/{documentName}/swagger.json";
@@ -69,12 +72,6 @@ namespace PortalCidadao.Api
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "PortalCidadao.Api v1");
                 c.RoutePrefix = "";
             });
-
-
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
 
             app.UseRouting();
             app.UseForwardedHeaders(new ForwardedHeadersOptions
