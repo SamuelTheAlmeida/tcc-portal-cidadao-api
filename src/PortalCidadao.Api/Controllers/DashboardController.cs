@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PortalCidadao.Application.Services.Interfaces;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PortalCidadao.Api.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize]
     public class DashboardController : ControllerBase
     {
         private readonly IDashboardService _service;

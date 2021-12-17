@@ -2,11 +2,13 @@
 using PortalCidadao.Domain.Models;
 using PortalCidadao.Application.Services.Interfaces;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PortalCidadao.Api.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize]
     public class CurtidaController : ControllerBase
     {
         private readonly ICurtidaService _service;
@@ -28,6 +30,7 @@ namespace PortalCidadao.Api.Controllers
             Ok(await _service.RemoverCurtida(id));
 
         [HttpGet("{postagemId:int}/{usuarioId:int}")]
+        [AllowAnonymous]
         public async Task<IActionResult> ObterCurtida(int postagemId, int usuarioId) =>
             Ok(await _service.ObterCurtida(postagemId, usuarioId));
     }

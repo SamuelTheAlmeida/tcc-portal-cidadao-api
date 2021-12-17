@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using PortalCidadao.Application.Services.Interfaces;
@@ -17,6 +18,7 @@ namespace PortalCidadao.Api.Controllers
         }
 
         [HttpGet("{nomeArquivo}")]
+        [AllowAnonymous]
         public async Task<IActionResult> ObterArquivo(string nomeArquivo)
         {
             try

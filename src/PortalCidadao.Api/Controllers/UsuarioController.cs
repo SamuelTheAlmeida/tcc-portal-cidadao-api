@@ -8,6 +8,7 @@ namespace PortalCidadao.Api.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize]
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioService _usuarioService;
@@ -26,6 +27,7 @@ namespace PortalCidadao.Api.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Cadastro([FromBody] UsuarioCadastroModel usuarioCadastroModel)
         {
             if (usuarioCadastroModel is null)
@@ -48,6 +50,7 @@ namespace PortalCidadao.Api.Controllers
         }
 
         [HttpPost("esqueci-senha/{email}")]
+        [AllowAnonymous]
         public async Task<IActionResult> EsqueciSenha([FromRoute] string email)
         {
             await _usuarioService.EsqueciSenha(email);
@@ -55,6 +58,7 @@ namespace PortalCidadao.Api.Controllers
         }
 
         [HttpPost("redefinir-senha")]
+        [AllowAnonymous]
         public async Task<IActionResult> RedefinirSenha([FromBody] RedefinicaoSenhaModel redefinicaoSenhaModel)
         {
             await _usuarioService.RedefinirSenha(redefinicaoSenhaModel);

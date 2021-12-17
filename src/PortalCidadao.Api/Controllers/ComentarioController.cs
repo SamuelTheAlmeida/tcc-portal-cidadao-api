@@ -2,11 +2,13 @@
 using PortalCidadao.Domain.Models;
 using PortalCidadao.Application.Services.Interfaces;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PortalCidadao.Api.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize]
     public class ComentarioController : ControllerBase
     {
         private readonly IComentarioService _service;
@@ -26,6 +28,7 @@ namespace PortalCidadao.Api.Controllers
             
 
         [HttpGet("{postagemId}")]
+        [AllowAnonymous]
         public async Task<IActionResult> ListarTodos(int postagemId) =>
             Ok(await _service.ListarTodos(postagemId));
         

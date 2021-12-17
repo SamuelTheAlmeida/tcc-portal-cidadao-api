@@ -1,3 +1,5 @@
+using System.Text;
+using Dapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +12,9 @@ using PortalCidadao.Application.Model;
 using PortalCidadao.CrossCutting;
 using PortalCidadao.Api.Middlewares;
 using PortalCidadao.Shared.Helpers;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace PortalCidadao.Api
 {
@@ -51,6 +56,25 @@ namespace PortalCidadao.Api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PortalCidadao.Api", Version = "v1" });
             });
             services.AddHttpContextAccessor();
+
+            var key = Configuration["PrivateKey"];
+            services.AddAuthentication(x =>
+                {
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -62,6 +86,7 @@ namespace PortalCidadao.Api
             }
 
             app.UseCors();
+            app.UseSwaggerAuthorized("ufpr", "jn$*Q8&3");
             app.UseSwagger(c =>
             {
                 c.RouteTemplate = "swagger/{documentName}/swagger.json";
