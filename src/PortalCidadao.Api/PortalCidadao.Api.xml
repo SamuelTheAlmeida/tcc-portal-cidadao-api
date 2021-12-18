@@ -1,0 +1,180 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PortalCidadao.Api</name>
+    </assembly>
+    <members>
+        <member name="M:PortalCidadao.Api.Controllers.ArquivoController.ObterArquivo(System.String)">
+            <summary>
+            Retorna um arquivo por nome
+            </summary>
+            <param name="nomeArquivo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PortalCidadao.Api.Controllers.ComentarioController.Inserir(PortalCidadao.Domain.Models.Comentario)">
+            <summary>
+            Insere um comentário numa postagem
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PortalCidadao.Api.Controllers.ComentarioController.removerComentario(System.Int32)">
+            <summary>
+            Remove um comentário de uma postagem
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PortalCidadao.Api.Controllers.ComentarioController.ListarTodos(System.Int32)">
+            <summary>
+            Lista todos os comentários de uma postagem
+            </summary>
+            <param name="postagemId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PortalCidadao.Api.Controllers.CurtidaController.Inserir(PortalCidadao.Domain.Models.Curtida)">
+            <summary>
+            Registra uma curtida ou descurtida em uma postagem
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PortalCidadao.Api.Controllers.CurtidaController.AtualizarCurtida(System.Int32,System.Boolean)">
+            <summary>
+            Atualiza um registro de curtida ou descurtida em uma postagem
+            </summary>
+            <param name="id"></param>
+            <param name="acao"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PortalCidadao.Api.Controllers.CurtidaController.RemoverCurtida(System.Int32)">
+            <summary>
+            Remove uma curtida ou descurtida em uma postagem
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PortalCidadao.Api.Controllers.CurtidaController.ObterCurtida(System.Int32,System.Int32)">
+            <summary>
+            Obtém os detalhes de curtidas de uma postagem
+            </summary>
+            <param name="postagemId"></param>
+            <param name="usuarioId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PortalCidadao.Api.Controllers.DashboardController.Categorias">
+            <summary>
+            Lista os dados para indicadores por categoria
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PortalCidadao.Api.Controllers.DashboardController.Bairros">
+            <summary>
+            Lista os dados para indicadores por bairro
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PortalCidadao.Api.Controllers.DashboardController.Atrasados(System.Int32,System.Int32)">
+            <summary>
+            Lista os dados para indicadores de postagens em atraso
+            </summary>
+            <param name="mesInicio"></param>
+            <param name="mesFim"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PortalCidadao.Api.Controllers.DashboardController.Abertos(System.Int32,System.Int32)">
+            <summary>
+            Lista os dados para indicadores de postagens abertas
+            </summary>
+            <param name="mesInicio"></param>
+            <param name="mesFim"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PortalCidadao.Api.Controllers.DashboardController.Segurança">
+            <summary>
+            Lista os dados para indicadores de segurança
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PortalCidadao.Api.Controllers.PostagemController.ListarTodos(System.String,System.Int32,System.Int32,System.String)">
+            <summary>
+            Lista todas as postagens não excluídas do sistema
+            </summary>
+            <param name="bairro">Filtro por bairro</param>
+            <param name="categoriaId">Filtro por categoria</param>
+            <param name="subcategoriaId">Filtro por subcategoria</param>
+            <param name="confiabilidade">Filtro por confiabilidade</param>
+            <returns></returns>
+        </member>
+        <member name="M:PortalCidadao.Api.Controllers.PostagemController.PostagensAbertasPorMes(System.String)">
+            <summary>
+            Retorna o número de postagens abertas no mês desejado
+            </summary>
+            <param name="mes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PortalCidadao.Api.Controllers.PostagemController.ObterPorId(System.Int32)">
+            <summary>
+            Retorna os dados de uma postagem específica
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PortalCidadao.Api.Controllers.PostagemController.ObterDetalhes(System.Int32)">
+            <summary>
+            Retorna os dados de uma postagem específica por ID
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PortalCidadao.Api.Controllers.PostagemController.Inserir(PortalCidadao.Api.Request.NovaPostagemRequest)">
+            <summary>
+            Insere uma nova postagem no sistema
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PortalCidadao.Api.Controllers.PostagemController.ListarCategorias">
+            <summary>
+            Lista todas as categorias do sistema
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PortalCidadao.Api.Controllers.UsuarioController.Login(PortalCidadao.Application.Model.LoginModel)">
+            <summary>
+            Autenticação do usuário de qualquer perfil no sistema via login e senha
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PortalCidadao.Api.Controllers.UsuarioController.Cadastro(PortalCidadao.Application.Model.UsuarioCadastroModel)">
+            <summary>
+            Cadastro de novo usuário cidadão no sistema
+            </summary>
+            <param name="usuarioCadastroModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PortalCidadao.Api.Controllers.UsuarioController.AlterarDados(System.Int32,PortalCidadao.Application.Model.UsuarioAlteracaoModel)">
+            <summary>
+            Alteração de dados do usuário
+            </summary>
+            <param name="id"></param>
+            <param name="usuarioAlteracaoModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PortalCidadao.Api.Controllers.UsuarioController.EsqueciSenha(System.String)">
+            <summary>
+            Solicita o envio de e-mail de redefinição de senha
+            </summary>
+            <param name="email"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PortalCidadao.Api.Controllers.UsuarioController.RedefinirSenha(PortalCidadao.Application.Model.RedefinicaoSenhaModel)">
+            <summary>
+            Realiza a alteração de senha do usuário
+            </summary>
+            <param name="redefinicaoSenhaModel"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

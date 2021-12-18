@@ -19,6 +19,11 @@ namespace PortalCidadao.Api.Controllers
         }
 
 
+        /// <summary>
+        /// Autenticação do usuário de qualquer perfil no sistema via login e senha
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost("login")]
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
@@ -26,6 +31,12 @@ namespace PortalCidadao.Api.Controllers
             return Ok(await _usuarioService.Autenticar(model));
         }
 
+
+        /// <summary>
+        /// Cadastro de novo usuário cidadão no sistema
+        /// </summary>
+        /// <param name="usuarioCadastroModel"></param>
+        /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Cadastro([FromBody] UsuarioCadastroModel usuarioCadastroModel)
@@ -39,6 +50,12 @@ namespace PortalCidadao.Api.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// Alteração de dados do usuário
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="usuarioAlteracaoModel"></param>
+        /// <returns></returns>
         [HttpPatch("{id:int}")]
         public async Task<IActionResult> AlterarDados([FromRoute] int id, [FromBody] UsuarioAlteracaoModel usuarioAlteracaoModel)
         {
@@ -49,6 +66,11 @@ namespace PortalCidadao.Api.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// Solicita o envio de e-mail de redefinição de senha
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         [HttpPost("esqueci-senha/{email}")]
         [AllowAnonymous]
         public async Task<IActionResult> EsqueciSenha([FromRoute] string email)
@@ -57,6 +79,11 @@ namespace PortalCidadao.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Realiza a alteração de senha do usuário
+        /// </summary>
+        /// <param name="redefinicaoSenhaModel"></param>
+        /// <returns></returns>
         [HttpPost("redefinir-senha")]
         [AllowAnonymous]
         public async Task<IActionResult> RedefinirSenha([FromBody] RedefinicaoSenhaModel redefinicaoSenhaModel)

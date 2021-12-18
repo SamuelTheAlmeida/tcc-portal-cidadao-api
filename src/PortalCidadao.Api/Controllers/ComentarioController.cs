@@ -17,16 +17,30 @@ namespace PortalCidadao.Api.Controllers
             _service = service;
         }
         
-
+        /// <summary>
+        /// Insere um comentário numa postagem
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
             [HttpPost]
         public async Task<IActionResult> Inserir(Comentario model) =>
             Ok(await _service.Inserir(model));
 
+        /// <summary>
+        /// Remove um comentário de uma postagem
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
             [HttpDelete("{id}")]
         public async Task<IActionResult> removerComentario(int id) =>
             Ok(await _service.removerComentario(id));
             
 
+        /// <summary>
+        /// Lista todos os comentários de uma postagem
+        /// </summary>
+        /// <param name="postagemId"></param>
+        /// <returns></returns>
         [HttpGet("{postagemId}")]
         [AllowAnonymous]
         public async Task<IActionResult> ListarTodos(int postagemId) =>

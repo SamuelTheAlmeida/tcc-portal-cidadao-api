@@ -19,25 +19,53 @@ namespace PortalCidadao.Api.Controllers
             _service = service;
         }
 
+        /// <summary>
+        /// Lista todas as postagens não excluídas do sistema
+        /// </summary>
+        /// <param name="bairro">Filtro por bairro</param>
+        /// <param name="categoriaId">Filtro por categoria</param>
+        /// <param name="subcategoriaId">Filtro por subcategoria</param>
+        /// <param name="confiabilidade">Filtro por confiabilidade</param>
+        /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> ListarTodos(string bairro, int categoriaId, int subcategoriaId, string confiabilidade) =>
              Ok(await _service.ListarTodos(bairro, categoriaId, subcategoriaId, confiabilidade));
 
+        /// <summary>
+        /// Retorna o número de postagens abertas no mês desejado
+        /// </summary>
+        /// <param name="mes"></param>
+        /// <returns></returns>
         [HttpGet("mes/{mes}")]
         public async Task<IActionResult> PostagensAbertasPorMes(string mes) =>
              Ok(await _service.PostagensAbertasPorMes(mes)); 
 
+        /// <summary>
+        /// Retorna os dados de uma postagem específica
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> ObterPorId(int id) =>
              Ok(await _service.ObterPorId(id));
 
+        /// <summary>
+        /// Retorna os dados de uma postagem específica por ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("detalhes/{id:int}")]
         [AllowAnonymous]
         public async Task<IActionResult> ObterDetalhes(int id) =>
             Ok(await _service.ObterPorId(id));
 
+        /// <summary>
+        /// Insere uma nova postagem no sistema
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Inserir(
             [FromForm] NovaPostagemRequest request)
@@ -46,6 +74,10 @@ namespace PortalCidadao.Api.Controllers
             return Ok(await _service.Inserir(model, request.File));
         }
 
+        /// <summary>
+        /// Lista todas as categorias do sistema
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("categorias")]
         [AllowAnonymous]
         public async Task<IActionResult> ListarCategorias() =>

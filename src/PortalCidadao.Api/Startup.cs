@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using System.Text;
 using Dapper;
 using Microsoft.AspNetCore.Builder;
@@ -53,7 +55,22 @@ namespace PortalCidadao.Api
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "PortalCidadao.Api", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "PortalCidadao.Api", 
+                    Version = "v1",
+                    Contact = new OpenApiContact()
+                    {
+                        Name = "Equipe de Desenvolvimento",
+                        Email = "portalcidadaoapp@gmail.com",
+                        Url = new Uri("https://portalcidadao.tk")
+                    },
+                    Description = "API da plataforma web e móvel do Portal Cidadão"
+                });
+
+                var filePath = Path.Combine(System.AppContext.BaseDirectory, "PortalCidadao.Api.xml");
+                c.IncludeXmlComments(filePath);
+
             });
             services.AddHttpContextAccessor();
 

@@ -17,6 +17,11 @@ namespace PortalCidadao.Api.Controllers
             _service = service;
         }
 
+        /// <summary>
+        /// Retorna um arquivo por nome
+        /// </summary>
+        /// <param name="nomeArquivo"></param>
+        /// <returns></returns>
         [HttpGet("{nomeArquivo}")]
         [AllowAnonymous]
         public async Task<IActionResult> ObterArquivo(string nomeArquivo)
