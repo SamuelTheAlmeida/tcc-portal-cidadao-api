@@ -99,7 +99,7 @@ namespace PortalCidadao.Application.Services
             if (usuario == null)
                 return;
 
-            usuario.Senha = redefinicaoSenhaModel.NovaSenha;
+            usuario.Senha = Md5HashExtensions.CreateMD5(redefinicaoSenhaModel.NovaSenha);
             await _usuarioRepository.AtualizarAsync(usuario, usuario.Id);
             await _usuarioRepository.AtualizarTokenRedefinicaoSenha(usuario.Id, null);
         }

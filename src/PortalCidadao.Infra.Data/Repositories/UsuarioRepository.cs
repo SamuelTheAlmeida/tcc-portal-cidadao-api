@@ -78,7 +78,8 @@ namespace PortalCidadao.Infra.Data.Repositories
             const string sql = @"UPDATE Usuario 
                                 SET 
                                 Email = CASE WHEN ISNULL(@Email) THEN Email ELSE @Email END,
-                                Nome = CASE WHEN ISNULL(@Nome) THEN Senha ELSE @Nome END
+                                Nome = CASE WHEN ISNULL(@Nome) THEN Nome ELSE @Nome END,
+                                Senha = CASE WHEN ISNULL(@Senha) THEN Senha ELSE @Senha END
                                 WHERE Id = @Id";
 
             await _dbConnection.ExecuteAsync(sql, usuario);
