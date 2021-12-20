@@ -23,4 +23,8 @@
     <ProjectReference Include="..\PortalCidadao.CrossCutting\PortalCidadao.CrossCutting.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Filters\" />
+  </ItemGroup>
+
 </Project>

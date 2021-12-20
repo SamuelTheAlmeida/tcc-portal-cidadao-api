@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Microsoft.AspNetCore.Builder;
@@ -63,9 +64,8 @@ namespace PortalCidadao.Api
                         Email = "portalcidadaoapp@gmail.com",
                         Url = new Uri("https://portalcidadao.tk")
                     },
-                    Description = "API da plataforma web e móvel do Portal Cidadão"
+                    Description = "API da plataforma web e móvel do Portal Cidadão",
                 });
-
                 var filePath = Path.Combine(System.AppContext.BaseDirectory, "PortalCidadao.Api.xml");
                 c.IncludeXmlComments(filePath);
 
@@ -106,11 +106,17 @@ namespace PortalCidadao.Api
             app.UseSwagger(c =>
             {
                 c.RouteTemplate = "swagger/{documentName}/swagger.json";
+                const string basePath = "/api";
+                var host = Configuration["SwaggerHost"];
+                c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
+                {
+                    swaggerDoc.Servers = new List<OpenApiServer> { new() { Url = $"{host}{basePath}" } };
+                });
             });
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "PortalCidadao.Api v1");
+                c.SwaggerEndpoint("swagger/v1/swagger.json", "PortalCidadao.Api v1");
                 c.RoutePrefix = "";
             });
 
