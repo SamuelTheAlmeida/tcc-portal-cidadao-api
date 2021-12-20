@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using PortalCidadao.Application.Model;
 
 namespace PortalCidadao.Api.Request
 {

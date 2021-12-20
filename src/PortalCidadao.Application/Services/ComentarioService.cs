@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using PortalCidadao.Application.Model;
@@ -8,7 +6,6 @@ using PortalCidadao.Application.Repositories;
 using PortalCidadao.Application.Services.Interfaces;
 using PortalCidadao.Domain.Enums;
 using PortalCidadao.Domain.Models;
-using Microsoft.AspNetCore.Http;
 
 namespace PortalCidadao.Application.Services
 {

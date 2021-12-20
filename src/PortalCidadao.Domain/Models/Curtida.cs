@@ -1,10 +1,6 @@
-using PortalCidadao.Domain.Enums;
-using System;
-using PortalCidadao.Api.Domain.Models;
-
 namespace PortalCidadao.Domain.Models
 {
-	public class Curtida
+    public class Curtida
 	{
 		public int Id { get; set; }
 		public bool Acao { get; set; }

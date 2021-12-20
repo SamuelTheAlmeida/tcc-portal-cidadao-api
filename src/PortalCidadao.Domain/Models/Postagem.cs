@@ -4,7 +4,7 @@ using PortalCidadao.Api.Domain.Models;
 
 namespace PortalCidadao.Domain.Models
 {
-	public class Postagem
+    public class Postagem
 	{
 		public int Id { get; set; }
 		public ESubcategoria Subcategoria { get; set; }

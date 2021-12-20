@@ -1,11 +1,9 @@
 ﻿using MailKit.Net.Smtp;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
 using PortalCidadao.Application.Repositories;
 using System;
 using System.IO;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace PortalCidadao.Infra.Data.Repositories

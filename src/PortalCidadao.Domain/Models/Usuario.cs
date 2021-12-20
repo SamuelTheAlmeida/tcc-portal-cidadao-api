@@ -3,7 +3,7 @@ using System;
 
 namespace PortalCidadao.Domain.Models
 {
-	public class Usuario
+    public class Usuario
 	{
 		public int Id { get; set; }
 		public string CPF { get; set; }

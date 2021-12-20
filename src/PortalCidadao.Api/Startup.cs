@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Text;
-using Dapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -14,7 +13,6 @@ using PortalCidadao.Application.Model;
 using PortalCidadao.CrossCutting;
 using PortalCidadao.Api.Middlewares;
 using PortalCidadao.Shared.Helpers;
-using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 

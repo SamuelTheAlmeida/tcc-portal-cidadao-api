@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using PortalCidadao.Application.Model;
-using PortalCidadao.Domain.Enums;
 using PortalCidadao.Domain.Models;
-using PortalCidadao.Shared.Extensions;
 
 namespace PortalCidadao.Application.Mappers
 {

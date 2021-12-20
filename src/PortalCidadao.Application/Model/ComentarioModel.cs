@@ -1,5 +1,4 @@
 ﻿using System;
-using PortalCidadao.Domain.Models;
 
 namespace PortalCidadao.Application.Model
 {
