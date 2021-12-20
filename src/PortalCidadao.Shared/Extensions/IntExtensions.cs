@@ -17,5 +17,11 @@ namespace PortalCidadao.Shared.Extensions
             var horaFormatada = hora.ToString().PadLeft(2, '0');
             return $"{horaFormatada}:00-{horaFormatada}:59";
         }
+
+        public static int ObterProximoMes(this int mes)
+        {
+            if (mes == 12) return 1;
+            return mes + 1;
+        }
     }
 }

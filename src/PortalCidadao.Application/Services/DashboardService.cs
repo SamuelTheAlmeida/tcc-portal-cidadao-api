@@ -52,7 +52,7 @@ namespace PortalCidadao.Application.Services
             var data = new DateTime(DateTime.MinValue.Month, mesInicio, DateTime.MinValue.Day);
 
             var mes = data.Month;
-            while (mes != mesFim)
+            while (mes != mesFim.ObterProximoMes())
             {
                 dashboardAtrasados.Add(await _dashboardRepository.ObterDashboardAtrasados(mes.ToString()));
                 data = data.AddMonths(1);
@@ -78,7 +78,7 @@ namespace PortalCidadao.Application.Services
             var data = new DateTime(DateTime.MinValue.Month, mesInicio, DateTime.MinValue.Day);
 
             var mes = data.Month;
-            while (mes != mesFim)
+            while (mes != mesFim.ObterProximoMes())
             {
                 dashboardAbertos.Add(await _dashboardRepository.ObterDashboardAbertos(mes.ToString()));
                 data = data.AddMonths(1);
