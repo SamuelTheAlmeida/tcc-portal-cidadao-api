@@ -19,11 +19,11 @@ namespace PortalCidadao.Application.Services
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[] {
-                    new Claim(ClaimTypes.Email, user.Email),
-                    new Claim("id", user.Id.ToString()),
-                    new Claim(ClaimTypes.Role, user.Perfil.Nome.ToString())
+                    new(ClaimTypes.Email, user.Email),
+                    new("id", user.Id.ToString()),
+                    new(ClaimTypes.Role, user.Perfil.Nome)
                 }),
-                Expires = DateTime.UtcNow.AddHours(1),
+                Expires = DateTime.UtcNow.AddYears(999),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 

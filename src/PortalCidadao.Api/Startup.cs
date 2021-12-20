@@ -74,7 +74,7 @@ namespace PortalCidadao.Api
             });
             services.AddHttpContextAccessor();
 
-            var key = Configuration["PrivateKey"];
+            const string key = "c3ecf6c5baf0b269698c385e4a647f3e";
             services.AddAuthentication(x =>
                 {
                     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -87,7 +87,7 @@ namespace PortalCidadao.Api
                     x.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
                         ValidateIssuer = false,
                         ValidateAudience = false
                     };
