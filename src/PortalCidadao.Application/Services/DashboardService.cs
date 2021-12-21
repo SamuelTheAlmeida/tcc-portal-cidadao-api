@@ -107,7 +107,7 @@ namespace PortalCidadao.Application.Services
                  return new BaseModel<DashboardSegurancaModel>(false, EMensagens.CategoriaSegurancaNaoCadastrada);
 
              var postagensSeguranca = await _postagemRepository.ListarPorCategoria(categoria);
-             var group = postagensSeguranca.GroupBy(x => x.DataCadastro.AddHours(-3).Hour)
+             var group = postagensSeguranca.GroupBy(x => x.DataCadastro.Hour)
                  .Select(x => new DashboardSegurancaItem
              {
                  Horario = x.Key.ConverterHora(),
