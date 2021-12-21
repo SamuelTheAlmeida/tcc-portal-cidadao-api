@@ -10,6 +10,7 @@ namespace PortalCidadao.Domain.Models
 		public int UsuarioId {get; set;}
 		public int PostagemId {get; set;}
         public string NomeUsuario { get; set; }
+        public int Perfil { get; set; }
     }
 }
 

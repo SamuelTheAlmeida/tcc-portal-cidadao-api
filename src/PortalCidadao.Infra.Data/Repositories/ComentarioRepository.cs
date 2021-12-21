@@ -54,6 +54,7 @@ namespace PortalCidadao.Infra.Data.Repositories
             return await _dbConnection.QueryAsync<Comentario, Usuario, Comentario>(sql, (c, u) =>
             {
                 c.NomeUsuario = u.Nome;
+                c.Perfil = (int)u.Perfil;
                 return c;
             }, new {postagemId});
 
