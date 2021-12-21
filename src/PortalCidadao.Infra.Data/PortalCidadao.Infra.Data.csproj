@@ -5,10 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="TemplatesEmail\PostagemResolvida.html" />
     <None Remove="TemplatesEmail\RedefinirSenha.html" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="TemplatesEmail\PostagemResolvida.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TemplatesEmail\RedefinirSenha.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

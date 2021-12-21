@@ -18,20 +18,38 @@ namespace PortalCidadao.Application.Services
         private readonly IPostagemRepository _repository;
         private readonly IArquivoRepository _arquivoRepository;
         private readonly IPontuacaoService _pontuacaoService;
+        private readonly IEmailRepository _emailRepository;
+        private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public PostagemService(IPostagemRepository repository, 
             IArquivoRepository arquivoRepository, 
             IPontuacaoService pontuacaoService,
+            IEmailRepository emailRepository,
+            IUsuarioRepository usuarioRepository,
+            IHttpContextAccessor httpContextAccessor,
             IMapper mapper)
         {
             _repository = repository;
             _arquivoRepository = arquivoRepository;
             _pontuacaoService = pontuacaoService;
+            _emailRepository = emailRepository;
+            _usuarioRepository = usuarioRepository;
+            _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
         }
 
-        public async Task<BaseModel<PostagemModel>> resolverPostagem(int id, bool resolvido) => 
-            new(true, EMensagens.RealizadaComSucesso, _mapper.Map<PostagemModel>(await _repository.resolverPostagem(id,resolvido)));
+        public async Task<BaseModel<PostagemModel>> resolverPostagem(int id, bool resolvido)
+        {
+            var postagem = await _repository.ObterDetalhado(id);
+            var usuario = postagem.Usuario;
+            var idUsuarioResolucao = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value;
+            var usuarioResolucao = await _usuarioRepository.ObterUsuarioPorIdAsync(Convert.ToInt32(idUsuarioResolucao));
+            var result = await _repository.resolverPostagem(id, resolvido);
+            await _emailRepository.PostagemResolvida(usuario.Nome, postagem.Titulo, usuarioResolucao.Nome, usuario.Email);
+            return new BaseModel<PostagemModel>(true, EMensagens.RealizadaComSucesso, _mapper.Map<PostagemModel>(result));
+        }
+            
 
         public async Task<BaseModel<IEnumerable<PostagemModel>>> ListarTodos(string bairro, int categoriaId, int subCategoriaId, string confiabilidade) => 
             new(true, EMensagens.RealizadaComSucesso, _mapper.Map<IEnumerable<PostagemModel>>(

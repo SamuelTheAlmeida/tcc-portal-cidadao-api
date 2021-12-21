@@ -31,7 +31,7 @@ namespace PortalCidadao.Infra.Data.Repositories
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress("Portal Cidadão", "portalcidadaoapp@gmail.com"));
             message.To.Add(new MailboxAddress(nome, email));
-            message.Subject = "Redefinição de senha";
+            message.Subject = "Portal Cidadão - Redefinição de senha";
 
             var bodyBuilder = new BodyBuilder
             {
@@ -44,9 +44,42 @@ namespace PortalCidadao.Infra.Data.Repositories
             client.Connect("smtp-relay.sendinblue.com", 587, false);
 
             //var senha = "Cc!azW5Wm_!tXWk";
-            var senha = "s9YDHUjR52xfA6JS";
+            const string senha = "s9YDHUjR52xfA6JS";
             await client.AuthenticateAsync("portalcidadaoapp@gmail.com", senha);
-            
+
+            await client.SendAsync(message);
+            await client.DisconnectAsync(true);
+        }
+
+        public async Task PostagemResolvida(string nome, string tituloPostagem, string usuarioResolucao, string email)
+        {
+            var caminhoBase = AppDomain.CurrentDomain.RelativeSearchPath ?? AppDomain.CurrentDomain.BaseDirectory;
+            var caminho = Path.Combine(Path.Combine(caminhoBase, "TemplatesEmail"), "PostagemResolvida.html");
+
+            var template = await File.ReadAllTextAsync(caminho);
+            template = template.Replace("{{nome}}", nome);
+            template = template.Replace("{{tituloPostagem}}", tituloPostagem);
+            template = template.Replace("{{usuarioResolucao}}", usuarioResolucao);
+            template = template.Replace("{{email}}", email);
+
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress("Portal Cidadão", "portalcidadaoapp@gmail.com"));
+            message.To.Add(new MailboxAddress(nome, email));
+            message.Subject = "Portal Cidadão - Postagem Resolvida";
+
+            var bodyBuilder = new BodyBuilder
+            {
+                HtmlBody = template
+            };
+
+            message.Body = bodyBuilder.ToMessageBody();
+
+            using var client = new SmtpClient();
+            client.Connect("smtp-relay.sendinblue.com", 587, false);
+
+            //var senha = "Cc!azW5Wm_!tXWk";
+            const string senha = "s9YDHUjR52xfA6JS";
+            await client.AuthenticateAsync("portalcidadaoapp@gmail.com", senha);
 
             await client.SendAsync(message);
             await client.DisconnectAsync(true);
